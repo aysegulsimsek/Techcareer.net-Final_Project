@@ -1,6 +1,5 @@
 @model IEnumerable<DBlog.Models.Article>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,39 +10,66 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .card {
+            display: flex;
+            flex-direction: row;
+            /* Resmi ve içeriği yan yana gösterir */
             border: 1px solid #ddd;
             border-radius: 0.5rem;
             overflow: hidden;
+            margin-bottom: 1rem;
         }
 
         .card-img-top {
-            width: 100%;
-            height: auto;
+            width: 150px;
+            /* Resim genişliği */
+            height: 100%;
+            /* Resim yüksekliği */
+            object-fit: cover;
+            /* Resmi kapsayıcıya sığdırır */
         }
 
         .card-body {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            flex: 1;
+            /* İçerik alanının tüm genişliği kaplamasını sağlar */
+            padding: 15px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-text {
+            margin-bottom: 1rem;
         }
     </style>
 </head>
 
 <body>
     <div class="container mt-4">
-        <h1>Articles</h1>
+        <h1 class="text-center">All Articles</h1>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
         <div class="row">
             @foreach (var article in Model)
             {
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
+                <div class="col-md-4">
+                    <div class="card">
                         @if (!string.IsNullOrEmpty(article.ImageUrl))
                         {
                             <img src="@article.ImageUrl" class="card-img-top" alt="@article.Title">
                         }
                         <div class="card-body">
                             <h5 class="card-title">@article.Title</h5>
-                            <p class="card-text">@article.Content</p>
+                            <p class="card-text">
+                                @Html.Raw(GetShortContent(article.Content))
+                            </p>
                             <a href="@Url.Action("Details", "Article", new { id = article.Id })"
                                 class="btn btn-primary">Read More</a>
                         </div>
@@ -56,3 +82,20 @@
 </body>
 
 </html>
+
+@functions {
+    private string GetShortContent(string content, int maxLength = 150)
+    {
+        if (string.IsNullOrEmpty(content))
+        {
+            return string.Empty;
+        }
+
+        if (content.Length <= maxLength)
+        {
+            return content;
+        }
+
+        return content.Substring(0, maxLength) + "...";
+    }
+}

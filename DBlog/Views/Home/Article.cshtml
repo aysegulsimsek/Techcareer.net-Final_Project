@@ -5,22 +5,23 @@
 }
 
 <div class="container">
-    <h1 class="mt-4 m-auto">All Articles</h1>
+    <h1 class="mt-4 text-center">All Articles</h1>
     <div class="list-group">
         @foreach (var article in Model)
         {
             <a href="@Url.Action("Details", "Article", new { id = article.Id })"
-                class="list-group-item list-group-item-action">
+               class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">@article.Title</h5>
                 </div>
-                <p class="mb-1">@article.Content.Length > 100 ? @article.Content.Substring(0, 100) + "..." :
-                    @article.Content</p>
+                <p class="mb-1">
+                    @Html.Raw(article.Content.Length > 100 ? article.Content.Substring(0, 100) + "..." : article.Content)
+                </p>
                 <small>Published on @article.PublishedDate.ToShortDateString()</small>
                 @if (!string.IsNullOrEmpty(article.ImageUrl))
                 {
                     <img src="@article.ImageUrl" alt="@article.Title" class="img-thumbnail mt-2"
-                        style="max-height: 150px; max-width: 150px;" />
+                         style="max-height: 150px; max-width: 150px;" />
                 }
             </a>
         }

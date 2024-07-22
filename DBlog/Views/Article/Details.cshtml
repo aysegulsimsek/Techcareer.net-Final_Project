@@ -6,9 +6,16 @@
 
 <div class="container">
     <h1>@Model.Title</h1>
+    <div class="d-flex gap-2 mb-3 justify-content-end ">
+        <!-- Edit Butonu -->
+        <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning">Edit</a>
 
-    <!-- Edit Butonu -->
-    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning mb-3">Edit</a>
+        <!-- Delete Butonu -->
+        <form method="post" asp-action="DeleteConfirmed" asp-route-id="@Model.Id"
+            onsubmit="return confirm('Are you sure you want to delete this article?');">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
 
     <!-- Makale resmi -->
     @if (!string.IsNullOrEmpty(Model.ImageUrl))
@@ -20,9 +27,8 @@
 
     <p>@Model.Content</p>
 
-    <!-- Makalenin yayım tarihi ve kullanıcı adı -->
+    <!-- Makalenin yayım tarihi -->
     <p><strong>Published on:</strong> @Model.PublishedDate.ToString("MMMM dd, yyyy")</p>
-    <p><strong>Author:</strong> @Model.User.UserName</p>
 
     <h3>Comments</h3>
 

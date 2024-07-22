@@ -18,8 +18,12 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\ASUS\OneDrive\Masaüstü\blog\DBlog
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/ASUS/OneDrive/Masaüstü/blog/DBlog/Views/Article/Comment.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXJ0aWNsZVxDb21tZW50LmNzaHRtbA==
+[C:/Users/ASUS/OneDrive/Masaüstü/blog/DBlog/Views/Article/AddComment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXJ0aWNsZVxBZGRDb21tZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ASUS/OneDrive/Masaüstü/blog/DBlog/Views/Article/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXJ0aWNsZVxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/ASUS/OneDrive/Masaüstü/blog/DBlog/Views/Article/Details.cshtml]

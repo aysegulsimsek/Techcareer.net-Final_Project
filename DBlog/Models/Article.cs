@@ -11,11 +11,13 @@ namespace DBlog.Models
         public string? Title { get; set; }
         public string? Content { get; set; }
         public string? ImageUrl { get; set; }
+        public string? ImageFile { get; set; }
         public DateTime PublishedDate { get; set; }
 
-        public int UserId { get; set; }
-        public User? User { get; set; } // User ilişkisini ekledik
+        // User ilişkisini kaldırdık
+        // public int UserId { get; set; }
+        // public User? User { get; set; } 
 
-        public ICollection<Comment>? Comments { get; set; } // Comment ilişkisini ekledik
+        public ICollection<Comment>? Comments { get; set; } // Comment ilişkisini koruduk
     }
 }

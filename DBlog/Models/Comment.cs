@@ -11,8 +11,6 @@ namespace DBlog.Models
         public DateTime CommentDate { get; set; }
 
         public int ArticleId { get; set; }
-        public Article? Article { get; set; } // Burayı 'required' yerine 'Article?' olarak değiştirdik
-        public int UserId { get; set; }
-        public User? User { get; set; } // User ilişkisini ekledik
+        public Article? Article { get; set; }
     }
 }

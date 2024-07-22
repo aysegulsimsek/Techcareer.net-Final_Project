@@ -26,6 +26,9 @@ namespace DBlog.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ImageFile")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("TEXT");
 
@@ -35,17 +38,7 @@ namespace DBlog.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Articles");
 
@@ -55,54 +48,48 @@ namespace DBlog.Migrations
                             Id = 1,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             ImageUrl = "https://image.shutterstock.com/image-vector/design-seamless-advertising-pattern-creative-600w-112354688.jpg",
-                            PublishedDate = new DateTime(2024, 7, 22, 21, 18, 12, 930, DateTimeKind.Local).AddTicks(8859),
-                            Title = "First Article",
-                            UserId = 1
+                            PublishedDate = new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8038),
+                            Title = "First Article"
                         },
                         new
                         {
                             Id = 2,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             ImageUrl = "https://fatstacksblog.com/wp-content/uploads/2019/11/Person-writing-article-nov26.jpg",
-                            PublishedDate = new DateTime(2024, 7, 22, 21, 18, 12, 930, DateTimeKind.Local).AddTicks(8870),
-                            Title = "Second Article",
-                            UserId = 1
+                            PublishedDate = new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8050),
+                            Title = "Second Article"
                         },
                         new
                         {
                             Id = 3,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             ImageUrl = "https://leverageedublog.s3.ap-south-1.amazonaws.com/blog/wp-content/uploads/2020/01/24145013/article-writing.jpg",
-                            PublishedDate = new DateTime(2024, 7, 22, 21, 18, 12, 930, DateTimeKind.Local).AddTicks(8872),
-                            Title = "Third Article",
-                            UserId = 2
+                            PublishedDate = new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8051),
+                            Title = "Third Article"
                         },
                         new
                         {
                             Id = 4,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
-                            ImageUrl = "https://th.bing.com/th/id/OIP.WwajPSJu5YunOsdTaD0hqwHaE7?rs=1&pid=ImgDetMain",
-                            PublishedDate = new DateTime(2024, 7, 22, 21, 18, 12, 930, DateTimeKind.Local).AddTicks(8873),
-                            Title = "Fourth Article",
-                            UserId = 2
+                            ImageUrl = "https://www.staceyeburke.com/wp-content/uploads/2018/06/publications1.jpg",
+                            PublishedDate = new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8053),
+                            Title = "Fourth Article"
                         },
                         new
                         {
                             Id = 5,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             ImageUrl = "https://image.shutterstock.com/image-vector/design-seamless-advertising-pattern-creative-600w-112354688.jpg",
-                            PublishedDate = new DateTime(2024, 7, 22, 21, 18, 12, 930, DateTimeKind.Local).AddTicks(8875),
-                            Title = "Fifth Article",
-                            UserId = 3
+                            PublishedDate = new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8054),
+                            Title = "Fifth Article"
                         },
                         new
                         {
                             Id = 6,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             ImageUrl = "https://fatstacksblog.com/wp-content/uploads/2019/11/Person-writing-article-nov26.jpg",
-                            PublishedDate = new DateTime(2024, 7, 22, 21, 18, 12, 930, DateTimeKind.Local).AddTicks(8876),
-                            Title = "Sixth Article",
-                            UserId = 3
+                            PublishedDate = new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8055),
+                            Title = "Sixth Article"
                         });
                 });
 
@@ -121,77 +108,11 @@ namespace DBlog.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("CommentId");
 
                     b.HasIndex("ArticleId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("DBlog.Models.User", b =>
-                {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            Email = "user1@example.com",
-                            IsAdmin = false,
-                            UserName = "User1"
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            Email = "user2@example.com",
-                            IsAdmin = false,
-                            UserName = "User2"
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            Email = "user3@example.com",
-                            IsAdmin = false,
-                            UserName = "User3"
-                        });
-                });
-
-            modelBuilder.Entity("DBlog.Models.Article", b =>
-                {
-                    b.HasOne("DBlog.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DBlog.Models.User", null)
-                        .WithMany("Articles")
-                        .HasForeignKey("UserId1");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DBlog.Models.Comment", b =>
@@ -202,26 +123,11 @@ namespace DBlog.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DBlog.Models.User", "User")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Article");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DBlog.Models.Article", b =>
                 {
-                    b.Navigation("Comments");
-                });
-
-            modelBuilder.Entity("DBlog.Models.User", b =>
-                {
-                    b.Navigation("Articles");
-
                     b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618

@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using DBlog.Models;
 using DBlog.Data;
 using System.Threading.Tasks;
+using System.IO;
+using System.Linq;
+using System;
 
 namespace DBlog.Controllers
 {
@@ -20,7 +23,6 @@ namespace DBlog.Controllers
         {
             var articles = await _context.Articles
                                          .Include(a => a.Comments)
-                                         .Include(a => a.User)
                                          .ToListAsync();
             return View(articles);
         }
@@ -30,7 +32,6 @@ namespace DBlog.Controllers
         {
             var article = await _context.Articles
                                   .Include(a => a.Comments)
-                                  .Include(a => a.User)
                                   .FirstOrDefaultAsync(a => a.Id == id);
             if (article == null)
             {
@@ -48,13 +49,48 @@ namespace DBlog.Controllers
         // Create Action (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Content,PublishedDate,UserId,ImageUrl")] Article article)
+        public async Task<IActionResult> Create(Article article, IFormFile? imageFile)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(article);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (imageFile != null)
+                {
+                    var allowedExtensions = new[] { ".jpg", ".png", ".jpeg" };
+                    var extension = Path.GetExtension(imageFile.FileName)?.ToLowerInvariant(); // Ensure extension is not null
+                    if (extension == null || !allowedExtensions.Contains(extension))
+                    {
+                        ModelState.AddModelError("", "Geçerli bir resim seçiniz!");
+                    }
+                    else
+                    {
+                        var randomFileName = $"{Guid.NewGuid()}{extension}";
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", randomFileName);
+
+                        try
+                        {
+                            using (var stream = new FileStream(path, FileMode.Create))
+                            {
+                                await imageFile.CopyToAsync(stream);
+                            }
+                            article.ImageUrl = $"/img/{randomFileName}";
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("", $"Dosya yüklenirken bir hata oluştu: {ex.Message}");
+                        }
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Bir dosya seçiniz.");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(article);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View(article);
         }
@@ -71,10 +107,9 @@ namespace DBlog.Controllers
         }
 
         // Edit Action (POST)
-        // Edit Action (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,PublishedDate,UserId,ImageUrl")] Article article)
+        public async Task<IActionResult> Edit(int id, Article article, IFormFile? imageFile)
         {
             if (id != article.Id)
             {
@@ -85,16 +120,46 @@ namespace DBlog.Controllers
             {
                 try
                 {
-                    // Mevcut veriyi kontrol edin
                     var existingArticle = await _context.Articles.FindAsync(id);
                     if (existingArticle == null)
                     {
                         return NotFound();
                     }
 
-                    // Güncellenmiş veriyi kontrol edin
+                    if (imageFile != null)
+                    {
+                        var allowedExtensions = new[] { ".jpg", ".png", ".jpeg" };
+                        var extension = Path.GetExtension(imageFile.FileName)?.ToLowerInvariant(); // Ensure extension is not null
+                        if (extension == null || !allowedExtensions.Contains(extension))
+                        {
+                            ModelState.AddModelError("", "Geçerli bir resim seçiniz!");
+                        }
+                        else
+                        {
+                            var randomFileName = $"{Guid.NewGuid()}{extension}";
+                            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", randomFileName);
+
+                            try
+                            {
+                                using (var stream = new FileStream(path, FileMode.Create))
+                                {
+                                    await imageFile.CopyToAsync(stream);
+                                }
+                                existingArticle.ImageUrl = $"/img/{randomFileName}";
+                            }
+                            catch (Exception ex)
+                            {
+                                ModelState.AddModelError("", $"Dosya yüklenirken bir hata oluştu: {ex.Message}");
+                            }
+                        }
+                    }
+
+                    existingArticle.Title = article.Title;
+                    existingArticle.Content = article.Content;
+
                     _context.Entry(existingArticle).CurrentValues.SetValues(article);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -107,7 +172,6 @@ namespace DBlog.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             return View(article);
         }
@@ -117,7 +181,6 @@ namespace DBlog.Controllers
         {
             var article = await _context.Articles
                 .Include(a => a.Comments)
-                .Include(a => a.User)
                 .FirstOrDefaultAsync(a => a.Id == id);
             if (article == null)
             {
@@ -136,6 +199,7 @@ namespace DBlog.Controllers
             {
                 _context.Articles.Remove(article);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Article deleted successfully.";
             }
             return RedirectToAction(nameof(Index));
         }
