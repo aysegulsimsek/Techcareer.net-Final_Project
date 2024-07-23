@@ -46,55 +46,6 @@ namespace DBlog.Controllers
             return View();
         }
 
-        // Create Action (POST)
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Article article, IFormFile? imageFile)
-        {
-            if (ModelState.IsValid)
-            {
-                if (imageFile != null)
-                {
-                    var allowedExtensions = new[] { ".jpg", ".png", ".jpeg" };
-                    var extension = Path.GetExtension(imageFile.FileName)?.ToLowerInvariant(); // Ensure extension is not null
-                    if (extension == null || !allowedExtensions.Contains(extension))
-                    {
-                        ModelState.AddModelError("", "Geçerli bir resim seçiniz!");
-                    }
-                    else
-                    {
-                        var randomFileName = $"{Guid.NewGuid()}{extension}";
-                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", randomFileName);
-
-                        try
-                        {
-                            using (var stream = new FileStream(path, FileMode.Create))
-                            {
-                                await imageFile.CopyToAsync(stream);
-                            }
-                            article.ImageUrl = $"/img/{randomFileName}";
-                        }
-                        catch (Exception ex)
-                        {
-                            ModelState.AddModelError("", $"Dosya yüklenirken bir hata oluştu: {ex.Message}");
-                        }
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Bir dosya seçiniz.");
-                }
-
-                if (ModelState.IsValid)
-                {
-                    _context.Add(article);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-            }
-            return View(article);
-        }
-
         // Edit Action (GET)
         public async Task<IActionResult> Edit(int id)
         {
@@ -126,38 +77,49 @@ namespace DBlog.Controllers
                         return NotFound();
                     }
 
-                    if (imageFile != null)
-                    {
-                        var allowedExtensions = new[] { ".jpg", ".png", ".jpeg" };
-                        var extension = Path.GetExtension(imageFile.FileName)?.ToLowerInvariant(); // Ensure extension is not null
-                        if (extension == null || !allowedExtensions.Contains(extension))
-                        {
-                            ModelState.AddModelError("", "Geçerli bir resim seçiniz!");
-                        }
-                        else
-                        {
-                            var randomFileName = $"{Guid.NewGuid()}{extension}";
-                            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", randomFileName);
-
-                            try
-                            {
-                                using (var stream = new FileStream(path, FileMode.Create))
-                                {
-                                    await imageFile.CopyToAsync(stream);
-                                }
-                                existingArticle.ImageUrl = $"/img/{randomFileName}";
-                            }
-                            catch (Exception ex)
-                            {
-                                ModelState.AddModelError("", $"Dosya yüklenirken bir hata oluştu: {ex.Message}");
-                            }
-                        }
-                    }
-
                     existingArticle.Title = article.Title;
                     existingArticle.Content = article.Content;
 
-                    _context.Entry(existingArticle).CurrentValues.SetValues(article);
+                    if (imageFile != null)
+                    {
+                        var allowedExtensions = new[] { ".jpg", ".png", ".jpeg" };
+                        var extension = Path.GetExtension(imageFile.FileName)?.ToLowerInvariant();
+                        if (extension == null || !allowedExtensions.Contains(extension))
+                        {
+                            ModelState.AddModelError("", "Geçerli bir resim seçiniz!");
+                            return View(article);
+                        }
+
+                        // Eski resmin silinmesi
+                        if (!string.IsNullOrEmpty(existingArticle.ImageFile))
+                        {
+                            var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", Path.GetFileName(existingArticle.ImageFile));
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
+                        }
+
+                        // Yeni resmin kaydedilmesi
+                        var randomFileName = $"{Guid.NewGuid()}{extension}";
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", randomFileName);
+
+                        try
+                        {
+                            using (var stream = new FileStream(path, FileMode.Create))
+                            {
+                                await imageFile.CopyToAsync(stream);
+                            }
+                            existingArticle.ImageFile = $"/img/{randomFileName}";
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("", $"Dosya yüklenirken bir hata oluştu: {ex.Message}");
+                            return View(article);
+                        }
+                    }
+
+                    _context.Update(existingArticle);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -176,21 +138,20 @@ namespace DBlog.Controllers
             return View(article);
         }
 
-        // Delete Action (GET)
+        // GET: Delete
         public async Task<IActionResult> Delete(int id)
         {
-            var article = await _context.Articles
-                .Include(a => a.Comments)
-                .FirstOrDefaultAsync(a => a.Id == id);
+            var article = await _context.Articles.FindAsync(id);
             if (article == null)
             {
                 return NotFound();
             }
+
             return View(article);
         }
 
-        // Delete Action (POST)
-        [HttpPost, ActionName("Delete")]
+        // POST: DeleteConfirmed
+        [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -204,7 +165,7 @@ namespace DBlog.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // AddComment Action
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddComment(int articleId, string content)
@@ -213,6 +174,19 @@ namespace DBlog.Controllers
             if (article == null)
             {
                 return NotFound();
+            }
+
+            // İçeriği doğrula
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                ViewData["ErrorMessage"] = "Yorum içeriği boş olamaz!";
+                return View("Details", article); // Yorum ekleme formunu da içeren detay sayfasını geri döndür
+            }
+
+            if (content.Length < 15 || content.Length > 100)
+            {
+                ViewData["ErrorMessage"] = "Yorum içeriği 15 ile 100 karakter arasında olmalıdır!";
+                return View("Details", article); // Yorum ekleme formunu da içeren detay sayfasını geri döndür
             }
 
             var comment = new Comment
@@ -227,6 +201,93 @@ namespace DBlog.Controllers
 
             return RedirectToAction(nameof(Details), new { id = articleId });
         }
+        public async Task<IActionResult> Comments()
+        {
+            var comments = await _context.Comments
+                                          .Include(c => c.Article)
+                                          .ToListAsync();
+            return View(comments);
+        }
+
+        // Edit Action (GET) for Comments
+        // Edit Comment (GET) for Comments
+        public async Task<IActionResult> EditComment(int id)
+        {
+            var comment = await _context.Comments.FindAsync(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            return View(comment);
+        }
+
+        // Edit Comment (POST) for Comments
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCommentPost(Comment comment)
+        {
+            // Yorumun bağlı olduğu makale var mı?
+            if (comment.ArticleId <= 0 || !await _context.Articles.AnyAsync(a => a.Id == comment.ArticleId))
+            {
+                ViewData["ErrorMessage"] = "Geçersiz Makale ID'si";
+                return View("EditComment", comment); // Hata mesajını geri döndür ve düzenleme formunu göster
+            }
+
+            // Yorum güncelleme işlemi
+            var existingComment = await _context.Comments.FindAsync(comment.CommentId);
+            if (existingComment == null)
+            {
+                return NotFound();
+            }
+
+            existingComment.Content = comment.Content;
+            _context.Comments.Update(existingComment);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = comment.ArticleId });
+        }
+
+
+
+
+        private bool CommentExists(int id)
+        {
+            return _context.Comments.Any(e => e.CommentId == id);
+        }
+
+        // GET: Delete Comment
+        public async Task<IActionResult> DeleteComment(int id)
+        {
+            var comment = await _context.Comments
+                                        .Include(c => c.Article)
+                                        .FirstOrDefaultAsync(c => c.CommentId == id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            return View(comment);
+        }
+
+        // POST: Delete Comment
+        [HttpPost, ActionName("DeleteComment")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCommentConfirmed(int id)
+        {
+            var comment = await _context.Comments.FindAsync(id);
+            if (comment != null)
+            {
+                _context.Comments.Remove(comment);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Comments));
+        }
+
+
+
+
+
+
 
         private bool ArticleExists(int id)
         {

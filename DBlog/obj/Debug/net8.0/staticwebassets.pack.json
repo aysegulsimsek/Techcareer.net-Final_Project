@@ -13,6 +13,26 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\1e11b036-04f0-4596-8f3c-fd1c8a8139c4.png",
+      "PackagePath": "staticwebassets\\img\\1e11b036-04f0-4596-8f3c-fd1c8a8139c4.png"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\4.jpg",
+      "PackagePath": "staticwebassets\\img\\4.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\5.jpg",
+      "PackagePath": "staticwebassets\\img\\5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\6.jpg",
+      "PackagePath": "staticwebassets\\img\\6.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\7.jpg",
+      "PackagePath": "staticwebassets\\img\\7.jpg"
+    },
+    {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

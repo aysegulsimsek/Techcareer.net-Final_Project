@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240722223130_InitialCreate")]
+    [Migration("20240723185345_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -32,9 +32,6 @@ namespace DBlog.Migrations
                     b.Property<string>("ImageFile")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("PublishedDate")
                         .HasColumnType("TEXT");
 
@@ -50,48 +47,48 @@ namespace DBlog.Migrations
                         {
                             Id = 1,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
-                            ImageUrl = "https://image.shutterstock.com/image-vector/design-seamless-advertising-pattern-creative-600w-112354688.jpg",
-                            PublishedDate = new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8038),
+                            ImageFile = "/img/1.jpg",
+                            PublishedDate = new DateTime(2024, 7, 13, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2798),
                             Title = "First Article"
                         },
                         new
                         {
                             Id = 2,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
-                            ImageUrl = "https://fatstacksblog.com/wp-content/uploads/2019/11/Person-writing-article-nov26.jpg",
-                            PublishedDate = new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8050),
+                            ImageFile = "/img/6.jpg",
+                            PublishedDate = new DateTime(2024, 6, 3, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2812),
                             Title = "Second Article"
                         },
                         new
                         {
                             Id = 3,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
-                            ImageUrl = "https://leverageedublog.s3.ap-south-1.amazonaws.com/blog/wp-content/uploads/2020/01/24145013/article-writing.jpg",
-                            PublishedDate = new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8051),
+                            ImageFile = "/img/4.jpg",
+                            PublishedDate = new DateTime(2024, 5, 4, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2813),
                             Title = "Third Article"
                         },
                         new
                         {
                             Id = 4,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
-                            ImageUrl = "https://www.staceyeburke.com/wp-content/uploads/2018/06/publications1.jpg",
-                            PublishedDate = new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8053),
+                            ImageFile = "/img/7.jpg",
+                            PublishedDate = new DateTime(2024, 6, 3, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2814),
                             Title = "Fourth Article"
                         },
                         new
                         {
                             Id = 5,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
-                            ImageUrl = "https://image.shutterstock.com/image-vector/design-seamless-advertising-pattern-creative-600w-112354688.jpg",
-                            PublishedDate = new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8054),
+                            ImageFile = "/img/5.jpg",
+                            PublishedDate = new DateTime(2024, 6, 23, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2816),
                             Title = "Fifth Article"
                         },
                         new
                         {
                             Id = 6,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
-                            ImageUrl = "https://fatstacksblog.com/wp-content/uploads/2019/11/Person-writing-article-nov26.jpg",
-                            PublishedDate = new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8055),
+                            ImageFile = "/img/6.jpg",
+                            PublishedDate = new DateTime(2024, 7, 3, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2817),
                             Title = "Sixth Article"
                         });
                 });

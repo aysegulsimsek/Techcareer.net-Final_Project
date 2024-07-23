@@ -42,6 +42,23 @@
         .card-text {
             margin-bottom: 1rem;
         }
+
+        .btn-gold {
+            background-color: gold;
+            border-color: gold;
+            color: black;
+        }
+
+        .btn-gold:hover {
+            background-color: rgb(229, 206, 148);
+            border-color: rgb(209, 192, 150);
+            color: rgb(53, 49, 49);
+        }
+
+        .card-shadow-yellow {
+            box-shadow: 0 4px 8px rgba(255, 215, 0, 0.5);
+            /* Sarı gölge */
+        }
     </style>
 </head>
 
@@ -60,21 +77,24 @@
             @foreach (var article in Model)
             {
                 <div class="col-md-4">
-                    <div class="card">
-                        @if (!string.IsNullOrEmpty(article.ImageUrl))
-                        {
-                            <img src="@article.ImageUrl" class="card-img-top" alt="@article.Title">
-                        }
+                    <div class="card card-shadow-yellow">
+                        <div class="card mt-2">
+                            @if (!string.IsNullOrEmpty(article.ImageFile))
+                            {
+                                <img src="@article.ImageFile" class="card-img-top" alt="@article.Title">
+                            }
+                        </div>
                         <div class="card-body">
                             <h5 class="card-title">@article.Title</h5>
                             <p class="card-text">
                                 @Html.Raw(GetShortContent(article.Content))
                             </p>
-                            <a href="@Url.Action("Details", "Article", new { id = article.Id })"
-                                class="btn btn-primary">Read More</a>
+                            <a href="@Url.Action("Details", "Article", new { id = article.Id })" class="btn btn-gold">Read
+                                More</a>
                         </div>
                     </div>
                 </div>
+
             }
         </div>
     </div>
@@ -84,7 +104,7 @@
 </html>
 
 @functions {
-    private string GetShortContent(string content, int maxLength = 150)
+    private string GetShortContent(string? content, int maxLength = 150)
     {
         if (string.IsNullOrEmpty(content))
         {

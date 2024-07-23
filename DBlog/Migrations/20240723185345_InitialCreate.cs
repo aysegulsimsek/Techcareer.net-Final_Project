@@ -21,7 +21,6 @@ namespace DBlog.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Content = table.Column<string>(type: "TEXT", nullable: true),
-                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true),
                     ImageFile = table.Column<string>(type: "TEXT", nullable: true),
                     PublishedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -53,15 +52,15 @@ namespace DBlog.Migrations
 
             migrationBuilder.InsertData(
                 table: "Articles",
-                columns: new[] { "Id", "Content", "ImageFile", "ImageUrl", "PublishedDate", "Title" },
+                columns: new[] { "Id", "Content", "ImageFile", "PublishedDate", "Title" },
                 values: new object[,]
                 {
-                    { 1, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", null, "https://image.shutterstock.com/image-vector/design-seamless-advertising-pattern-creative-600w-112354688.jpg", new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8038), "First Article" },
-                    { 2, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", null, "https://fatstacksblog.com/wp-content/uploads/2019/11/Person-writing-article-nov26.jpg", new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8050), "Second Article" },
-                    { 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", null, "https://leverageedublog.s3.ap-south-1.amazonaws.com/blog/wp-content/uploads/2020/01/24145013/article-writing.jpg", new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8051), "Third Article" },
-                    { 4, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", null, "https://www.staceyeburke.com/wp-content/uploads/2018/06/publications1.jpg", new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8053), "Fourth Article" },
-                    { 5, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", null, "https://image.shutterstock.com/image-vector/design-seamless-advertising-pattern-creative-600w-112354688.jpg", new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8054), "Fifth Article" },
-                    { 6, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", null, "https://fatstacksblog.com/wp-content/uploads/2019/11/Person-writing-article-nov26.jpg", new DateTime(2024, 7, 23, 1, 31, 29, 915, DateTimeKind.Local).AddTicks(8055), "Sixth Article" }
+                    { 1, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", "/img/1.jpg", new DateTime(2024, 7, 13, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2798), "First Article" },
+                    { 2, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", "/img/6.jpg", new DateTime(2024, 6, 3, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2812), "Second Article" },
+                    { 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", "/img/4.jpg", new DateTime(2024, 5, 4, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2813), "Third Article" },
+                    { 4, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", "/img/7.jpg", new DateTime(2024, 6, 3, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2814), "Fourth Article" },
+                    { 5, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", "/img/5.jpg", new DateTime(2024, 6, 23, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2816), "Fifth Article" },
+                    { 6, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", "/img/6.jpg", new DateTime(2024, 7, 3, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2817), "Sixth Article" }
                 });
 
             migrationBuilder.CreateIndex(

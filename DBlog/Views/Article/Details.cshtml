@@ -6,22 +6,21 @@
 
 <div class="container">
     <h1>@Model.Title</h1>
-    <div class="d-flex gap-2 mb-3 justify-content-end ">
+    <div class="d-flex gap-2 mb-3 justify-content-end">
         <!-- Edit Butonu -->
         <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning">Edit</a>
 
         <!-- Delete Butonu -->
-        <form method="post" asp-action="DeleteConfirmed" asp-route-id="@Model.Id"
-            onsubmit="return confirm('Are you sure you want to delete this article?');">
+        <form method="post" asp-action="Delete" asp-route-id="@Model.Id">
             <button type="submit" class="btn btn-danger">Delete</button>
         </form>
     </div>
 
     <!-- Makale resmi -->
-    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    @if (!string.IsNullOrEmpty(Model.ImageFile))
     {
         <div class="mb-3">
-            <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid rounded" />
+            <img src="@Model.ImageFile" alt="@Model.Title" class="img-fluid rounded" />
         </div>
     }
 
@@ -33,10 +32,17 @@
     <h3>Comments</h3>
 
     <!-- Yorum ekleme formu -->
-    <form method="post" asp-action="AddComment">
+    <form id="commentForm" method="post" asp-action="AddComment">
         <input type="hidden" name="articleId" value="@Model.Id" />
         <div class="mb-3">
-            <textarea name="content" class="form-control" rows="3" placeholder="Add a comment..."></textarea>
+            <textarea name="content" class="form-control" rows="3" placeholder="Add a comment..."
+                id="commentContent"></textarea>
+            @if (ViewData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger mt-2" id="errorMessage">
+                    @ViewData["ErrorMessage"]
+                </div>
+            }
         </div>
         <button type="submit" class="btn btn-primary">Add Comment</button>
     </form>
@@ -56,3 +62,30 @@
         <p>No comments yet. Be the first to comment!</p>
     }
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Hata mesajını göster
+            var errorMessage = document.getElementById('errorMessage');
+            if (errorMessage) {
+                alert(errorMessage.textContent); // Hata mesajını alert ile göster
+            }
+
+            // Yorum formunun doğrulamasını yap
+            var form = document.getElementById('commentForm');
+            var commentContent = document.getElementById('commentContent');
+
+            form.addEventListener('submit', function (event) {
+                var content = commentContent.value.trim();
+                if (content === '') {
+                    alert('Comment content cannot be empty.'); // Boş yorum kontrolü
+                    event.preventDefault(); // Formun gönderilmesini engelle
+                } else if (content.length < 15 || content.length > 100) {
+                    alert('Comment must be between 15 and 100 characters.'); // Karakter uzunluğu kontrolü
+                    event.preventDefault(); // Formun gönderilmesini engelle
+                }
+            });
+        });
+    </script>
+}
