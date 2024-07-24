@@ -5,7 +5,13 @@
 }
 
 <div class="container">
-    <h1 class="mt-4 text-center">All Articles</h1>
+    <div class="d-flex">
+
+        <h1 class="mt-4 text-center">All Articles</h1>
+        <button class="btn btn-primary" asp-action="Create" asp-controller="Article">Makale Oluştur</button>
+
+    </div>
+
     <div class="list-group">
         @foreach (var article in Model)
         {

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CFxkUiMu+REZM9dPCwiYUiG+jWA/s5pPtU3VA34iLig=",
+  "Hash": "oK8q3erp9QyBme7H7U0SdouKboCabYrXzve97DgNzLc=",
   "Source": "DBlog",
   "BasePath": "_content/DBlog",
   "Mode": "Default",
@@ -112,12 +112,12 @@
       "OriginalItemSpec": "wwwroot\\img\\1e11b036-04f0-4596-8f3c-fd1c8a8139c4.png"
     },
     {
-      "Identity": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\4.jpg",
+      "Identity": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\3718cc19-0323-44e4-97a7-c93fcc99e6e3.png",
       "SourceId": "DBlog",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\",
       "BasePath": "_content/DBlog",
-      "RelativePath": "img/4.jpg",
+      "RelativePath": "img/3718cc19-0323-44e4-97a7-c93fcc99e6e3.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -128,7 +128,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\img\\4.jpg"
+      "OriginalItemSpec": "wwwroot\\img\\3718cc19-0323-44e4-97a7-c93fcc99e6e3.png"
     },
     {
       "Identity": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\5.jpg",
@@ -186,6 +186,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img\\7.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\b8c46438-b5ba-4ca7-b195-2786faa9232e.png",
+      "SourceId": "DBlog",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\",
+      "BasePath": "_content/DBlog",
+      "RelativePath": "img/b8c46438-b5ba-4ca7-b195-2786faa9232e.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\b8c46438-b5ba-4ca7-b195-2786faa9232e.png"
     },
     {
       "Identity": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\js\\site.js",

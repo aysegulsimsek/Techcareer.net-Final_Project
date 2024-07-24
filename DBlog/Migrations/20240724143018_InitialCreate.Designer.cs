@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240723185345_InitialCreate")]
+    [Migration("20240724143018_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -48,7 +48,7 @@ namespace DBlog.Migrations
                             Id = 1,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             ImageFile = "/img/1.jpg",
-                            PublishedDate = new DateTime(2024, 7, 13, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2798),
+                            PublishedDate = new DateTime(2024, 7, 14, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(796),
                             Title = "First Article"
                         },
                         new
@@ -56,7 +56,7 @@ namespace DBlog.Migrations
                             Id = 2,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             ImageFile = "/img/6.jpg",
-                            PublishedDate = new DateTime(2024, 6, 3, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2812),
+                            PublishedDate = new DateTime(2024, 6, 4, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(809),
                             Title = "Second Article"
                         },
                         new
@@ -64,7 +64,7 @@ namespace DBlog.Migrations
                             Id = 3,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             ImageFile = "/img/4.jpg",
-                            PublishedDate = new DateTime(2024, 5, 4, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2813),
+                            PublishedDate = new DateTime(2024, 5, 5, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(810),
                             Title = "Third Article"
                         },
                         new
@@ -72,7 +72,7 @@ namespace DBlog.Migrations
                             Id = 4,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             ImageFile = "/img/7.jpg",
-                            PublishedDate = new DateTime(2024, 6, 3, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2814),
+                            PublishedDate = new DateTime(2024, 6, 4, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(811),
                             Title = "Fourth Article"
                         },
                         new
@@ -80,7 +80,7 @@ namespace DBlog.Migrations
                             Id = 5,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             ImageFile = "/img/5.jpg",
-                            PublishedDate = new DateTime(2024, 6, 23, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2816),
+                            PublishedDate = new DateTime(2024, 6, 24, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(813),
                             Title = "Fifth Article"
                         },
                         new
@@ -88,7 +88,7 @@ namespace DBlog.Migrations
                             Id = 6,
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             ImageFile = "/img/6.jpg",
-                            PublishedDate = new DateTime(2024, 7, 3, 21, 53, 45, 681, DateTimeKind.Local).AddTicks(2817),
+                            PublishedDate = new DateTime(2024, 7, 4, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(814),
                             Title = "Sixth Article"
                         });
                 });

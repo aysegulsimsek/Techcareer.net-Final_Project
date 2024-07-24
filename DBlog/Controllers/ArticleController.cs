@@ -40,11 +40,6 @@ namespace DBlog.Controllers
             return View(article);
         }
 
-        // Create Action (GET)
-        public IActionResult Create()
-        {
-            return View();
-        }
 
         // Edit Action (GET)
         public async Task<IActionResult> Edit(int id)
@@ -284,11 +279,47 @@ namespace DBlog.Controllers
         }
 
 
+        // Create Action (GET)
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(Article model, IFormFile? imageFile)
+        {
+            if (imageFile != null)
+            {
+                // Geçerli uzantıları belirleyin
+                var allowedExtensions = new[] { ".jpg", ".png", ".jpeg" };
+                var extension = Path.GetExtension(imageFile.FileName)?.ToLowerInvariant();
 
+                // Uzantının geçerli olup olmadığını kontrol edin
+                if (extension == null || !allowedExtensions.Contains(extension))
+                {
+                    ModelState.AddModelError("", "Geçerli bir resim seçiniz!");
+                    return View(model); // Modeli geri döndürün, böylece kullanıcı form verilerini kaybetmez
+                }
 
+                // Yeni resim adı ve yolu belirleyin
+                var randomFileName = $"{Guid.NewGuid()}{extension}";
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", randomFileName);
 
+                // Resim dosyasını kaydedin
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
 
+                // Modelin ImagePath özelliğini güncelleyin
+                model.ImageFile = $"/img/{randomFileName}";
+            }
 
+            // Modeli veritabanına ekleyin ve kaydedin
+            _context.Articles.Add(model);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
         private bool ArticleExists(int id)
         {
             return _context.Articles.Any(e => e.Id == id);
