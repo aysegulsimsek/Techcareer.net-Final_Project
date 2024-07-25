@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace DBlog.Migrations
 {
     /// <inheritdoc />
@@ -14,6 +12,23 @@ namespace DBlog.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserName = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Email = table.Column<string>(type: "TEXT", nullable: true),
+                    Image = table.Column<string>(type: "TEXT", nullable: true),
+                    IsAdmin = table.Column<bool>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Articles",
                 columns: table => new
                 {
@@ -22,11 +37,18 @@ namespace DBlog.Migrations
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Content = table.Column<string>(type: "TEXT", nullable: true),
                     ImageFile = table.Column<string>(type: "TEXT", nullable: true),
-                    PublishedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    PublishedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Articles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Articles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -37,6 +59,7 @@ namespace DBlog.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Content = table.Column<string>(type: "TEXT", nullable: true),
                     CommentDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     ArticleId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -48,25 +71,28 @@ namespace DBlog.Migrations
                         principalTable: "Articles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
+            migrationBuilder.CreateIndex(
+                name: "IX_Articles_UserId",
                 table: "Articles",
-                columns: new[] { "Id", "Content", "ImageFile", "PublishedDate", "Title" },
-                values: new object[,]
-                {
-                    { 1, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", "/img/1.jpg", new DateTime(2024, 7, 14, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(796), "First Article" },
-                    { 2, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", "/img/6.jpg", new DateTime(2024, 6, 4, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(809), "Second Article" },
-                    { 3, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", "/img/4.jpg", new DateTime(2024, 5, 5, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(810), "Third Article" },
-                    { 4, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", "/img/7.jpg", new DateTime(2024, 6, 4, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(811), "Fourth Article" },
-                    { 5, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", "/img/5.jpg", new DateTime(2024, 6, 24, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(813), "Fifth Article" },
-                    { 6, "Lorem Ipsum is simply dummy text of the printing and typesetting industry...", "/img/6.jpg", new DateTime(2024, 7, 4, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(814), "Sixth Article" }
-                });
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_ArticleId",
                 table: "Comments",
                 column: "ArticleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_UserId",
+                table: "Comments",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -77,6 +103,9 @@ namespace DBlog.Migrations
 
             migrationBuilder.DropTable(
                 name: "Articles");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

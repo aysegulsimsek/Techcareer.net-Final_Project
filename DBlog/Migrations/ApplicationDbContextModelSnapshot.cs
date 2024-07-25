@@ -17,7 +17,7 @@ namespace DBlog.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.7");
 
-            modelBuilder.Entity("DBlog.Models.Article", b =>
+            modelBuilder.Entity("DBlog.Entity.Article", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,62 +35,17 @@ namespace DBlog.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Articles");
+                    b.HasIndex("UserId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
-                            ImageFile = "/img/1.jpg",
-                            PublishedDate = new DateTime(2024, 7, 14, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(796),
-                            Title = "First Article"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
-                            ImageFile = "/img/6.jpg",
-                            PublishedDate = new DateTime(2024, 6, 4, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(809),
-                            Title = "Second Article"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
-                            ImageFile = "/img/4.jpg",
-                            PublishedDate = new DateTime(2024, 5, 5, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(810),
-                            Title = "Third Article"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
-                            ImageFile = "/img/7.jpg",
-                            PublishedDate = new DateTime(2024, 6, 4, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(811),
-                            Title = "Fourth Article"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
-                            ImageFile = "/img/5.jpg",
-                            PublishedDate = new DateTime(2024, 6, 24, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(813),
-                            Title = "Fifth Article"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
-                            ImageFile = "/img/6.jpg",
-                            PublishedDate = new DateTime(2024, 7, 4, 17, 30, 18, 47, DateTimeKind.Local).AddTicks(814),
-                            Title = "Sixth Article"
-                        });
+                    b.ToTable("Articles");
                 });
 
-            modelBuilder.Entity("DBlog.Models.Comment", b =>
+            modelBuilder.Entity("DBlog.Entity.Comment", b =>
                 {
                     b.Property<int>("CommentId")
                         .ValueGeneratedOnAdd()
@@ -105,26 +60,84 @@ namespace DBlog.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("CommentId");
 
                     b.HasIndex("ArticleId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("DBlog.Models.Comment", b =>
+            modelBuilder.Entity("DBlog.Entity.User", b =>
                 {
-                    b.HasOne("DBlog.Models.Article", "Article")
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("DBlog.Entity.Article", b =>
+                {
+                    b.HasOne("DBlog.Entity.User", "User")
+                        .WithMany("Articles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DBlog.Entity.Comment", b =>
+                {
+                    b.HasOne("DBlog.Entity.Article", "Article")
                         .WithMany("Comments")
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DBlog.Entity.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Article");
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DBlog.Models.Article", b =>
+            modelBuilder.Entity("DBlog.Entity.Article", b =>
                 {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("DBlog.Entity.User", b =>
+                {
+                    b.Navigation("Articles");
+
                     b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618

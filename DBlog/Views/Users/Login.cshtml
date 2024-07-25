@@ -1,0 +1,54 @@
+@{
+    Layout = null;
+    ViewData["Title"] = "Login";
+}
+@model LoginViewModel
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap">
+    <link rel="stylesheet" href="~/css/style.css">
+    <title>Login Page</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="login-section">
+            <header>Login</header>
+            <form asp-controller="Users" asp-action="Login" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <label for="UserName"></label>
+                <input class="text" type="text" placeholder="Username" name="Username" required>
+                <label for="password"></label>
+                <input class="text" type="password" placeholder="Password" name="Password" required
+                    autocomplete="current-password">
+                <div class="checkbox">
+                    <br><input type="checkbox" name="RememberMe">&nbsp; Remember Me
+                </div>
+                <button type="submit">Login</button>
+                <p>Don't have an account? <a class="signInBtnLink" href="#">Sign Up</a></p>
+            </form>
+        </div>
+        <div class="signup-section">
+            <header>Sign Up</header>
+            <form action="">
+                <input class="text" type="text" placeholder="Username" required autocomplete="username">
+                <input class="text" type="email" placeholder="Email" required autocomplete="email">
+                <input class="text" type="password" placeholder="Password" required autocomplete="new-password">
+                <div class="checkbox">
+                    <input type="checkbox">&nbsp; I agree to the terms & conditions
+                </div>
+                <button type="submit">Sign Up</button>
+                <p>Already have an account? <a class="signUpBtnLink" href="#">Sign In</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="~/js/script.js"></script>
+</body>
+
+</html>

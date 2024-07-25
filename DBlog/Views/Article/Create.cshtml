@@ -1,4 +1,7 @@
-@model DBlog.Models.Article
+@model DBlog.Entity.Article
+@{
+    Layout = "_Layout";
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +32,6 @@
             font-size: 1.5rem;
             color: #333;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-            /* Gölge efekti */
         }
     </style>
 </head>
@@ -40,28 +42,26 @@
         <form asp-action="Create" asp-controller="Article" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label asp-for="Title" class="form-label">Makale Başlığı</label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" class="form-control" required />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Content" class="form-label">Makalenizin İçeriği</label>
-                <textarea asp-for="Content" class="form-control"></textarea>
+                <textarea asp-for="Content" class="textarea form-control" required></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ImageFile" class="form-label">Makalenize Resim Ekleyin</label>
-                <input type="file" asp-for="ImageFile" class="form-control" />
+                <input type="file" asp-for="ImageFile" class="form-control" required />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-success">Oluştur</button>
         </form>
     </div>
 
-    <!-- Include the necessary JavaScript files for Bootstrap validation -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Include validation scripts -->
     <partial name="_ValidationScriptsPartial" />
 </body>
 

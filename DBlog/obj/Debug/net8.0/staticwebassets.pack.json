@@ -9,6 +9,10 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\css\\style.css",
+      "PackagePath": "staticwebassets\\css\\style.css"
+    },
+    {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
@@ -19,6 +23,10 @@
     {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\3718cc19-0323-44e4-97a7-c93fcc99e6e3.png",
       "PackagePath": "staticwebassets\\img\\3718cc19-0323-44e4-97a7-c93fcc99e6e3.png"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\40b1d5bb-4557-45e4-8f8a-f2a4e7f6f4b1.png",
+      "PackagePath": "staticwebassets\\img\\40b1d5bb-4557-45e4-8f8a-f2a4e7f6f4b1.png"
     },
     {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\5.jpg",
@@ -33,8 +41,28 @@
       "PackagePath": "staticwebassets\\img\\7.jpg"
     },
     {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\79acd116-c7bf-4449-ad4f-ae4a78d320fe.jpg",
+      "PackagePath": "staticwebassets\\img\\79acd116-c7bf-4449-ad4f-ae4a78d320fe.jpg"
+    },
+    {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\b8c46438-b5ba-4ca7-b195-2786faa9232e.png",
       "PackagePath": "staticwebassets\\img\\b8c46438-b5ba-4ca7-b195-2786faa9232e.png"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\d5cf1ffe-8d2e-4133-bd13-25c83e8b7b1c.png",
+      "PackagePath": "staticwebassets\\img\\d5cf1ffe-8d2e-4133-bd13-25c83e8b7b1c.png"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\p1.jpg",
+      "PackagePath": "staticwebassets\\img\\p1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\p2.jpg",
+      "PackagePath": "staticwebassets\\img\\p2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\js\\script.js",
+      "PackagePath": "staticwebassets\\js\\script.js"
     },
     {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\js\\site.js",

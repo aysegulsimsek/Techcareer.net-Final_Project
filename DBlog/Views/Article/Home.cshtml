@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - My Blog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        .hero {
+            background-image: url('https://w0.peakpx.com/wallpaper/21/585/HD-wallpaper-missed-spring-bird-blue-sky-do%C4%9Fa-forest-green-natural-nature-spring-stream-sun.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            padding: 80px 0;
+        }
+
+        .hero-text {
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+        }
+
+        .feature {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .testimonial {
+            background-color: #f8f9fa;
+            padding: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-item {
+            text-align: center;
+        }
+
+        .custom-bg {
+            background-color: #343a40;
+        }
+
+        .swiper-container {
+            width: 100%;
+            height: auto;
+        }
+
+        .swiper-wrapper {
+            display: flex;
+        }
+
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .swiper-pagination {
+            bottom: 10px;
+        }
+
+        .swiper-button-next {
+            right: 0px;
+            top: 40%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .swiper-button-prev {
+            left: -0px;
+            top: 40%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="">
+
+
+        <div class="hero w-75 m-auto mt-5">
+            <div class="container hero-text">
+                <h1 class="display-4">Welcome to My Blog</h1>
+                <p class="lead">Your go-to place for insightful articles and updates.</p>
+                <a asp-controller="Article" asp-action="Index" class="btn btn-light btn-lg">Read Our Articles</a>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-newspaper"></i>
+                        </div>
+                        <h4>Latest News</h4>
+                        <p>Stay updated with the latest news and trends in various fields.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-person"></i>
+                        </div>
+                        <h4>Expert Writers</h4>
+                        <p>Our content is crafted by industry experts and seasoned writers.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-chat-dots"></i>
+                        </div>
+                        <h4>Engaging Discussions</h4>
+                        <p>Join discussions and share your thoughts with our community.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="testimonial w-75 m-auto mt-5">
+            <div class="container">
+                <h2 class="text-center mb-4">What Our Readers Say</h2>
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="testimonial-item d-flex align-items-start">
+                                <img src="https://th.bing.com/th/id/R.c11b6f38dffc24a4508217513b0e50bd?rik=Pt%2bkITlukiMkWg&riu=http%3a%2f%2fwww.emmegi.co.uk%2fwp-content%2fuploads%2f2019%2f01%2fUser-Icon.jpg&ehk=zjS04fF4nxx%2bpkvRPsSezyic3Z7Yfu%2fuoT75KnbNv1Y%3d&risl=&pid=ImgRaw&r=0"
+                                    alt="John Doe" class="rounded-circle me-3" style="width: 80px; height: 80px;">
+                                <div>
+                                    <p class="lead">"A fantastic resource for up-to-date information and insightful
+                                        articles!"</p>
+                                    <footer class="blockquote-footer">John Doe</footer>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="testimonial-item d-flex align-items-start">
+                                <img src="https://cdn-icons-png.flaticon.com/512/4795/4795042.png" alt="Jane Smith"
+                                    class="rounded-circle me-3" style="width: 80px; height: 80px;">
+                                <div>
+                                    <p class="lead">"I love the variety of topics covered. There's something for
+                                        everyone!"
+                                    </p>
+                                    <footer class="blockquote-footer">Jane Smith</footer>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="testimonial-item d-flex align-items-start">
+                                <img src="https://th.bing.com/th/id/OIP.9NBeZMWaWqVOkgm3zDNtZgHaHZ?pid=ImgDet&w=199&h=199&c=7&dpr=2"
+                                    alt="Emily Johnson" class="rounded-circle me-3" style="width: 80px; height: 80px;">
+                                <div>
+                                    <p class="lead">"Highly recommend for anyone looking to stay informed and
+                                        entertained."
+                                    </p>
+                                    <footer class="blockquote-footer">Emily Johnson</footer>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="testimonial-item d-flex align-items-start">
+                                <img src="https://www.pngarts.com/files/5/User-Avatar-PNG-Image-Background.png"
+                                    alt="Alice Cooper" class="rounded-circle me-3" style="width: 80px; height: 80px;">
+                                <div>
+                                    <p class="lead">"The articles are well-researched and engaging!"</p>
+                                    <footer class="blockquote-footer">Alice Cooper</footer>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="testimonial-item d-flex align-items-start">
+                                <img src="https://vistapointe.net/images/bob-marley-2.jpg" alt="Bob Marley"
+                                    class="rounded-circle me-3" style="width: 80px; height: 80px;">
+                                <div>
+                                    <p class="lead">"A great source of knowledge and inspiration."</p>
+                                    <footer class="blockquote-footer">Bob Marley</footer>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Additional Testimonial 6 -->
+                        <div class="swiper-slide">
+                            <div class="testimonial-item d-flex align-items-start">
+                                <img src="https://th.bing.com/th/id/R.cdcdd744f67152de17b7bcc36582daff?rik=kFxfEWaTsu30QA&pid=ImgRaw&r=0"
+                                    alt="Charlie Brown" class="rounded-circle me-3" style="width: 80px; height: 80px;">
+                                <div>
+                                    <p class="lead">"The best blog for staying updated with current trends!"</p>
+                                    <footer class="blockquote-footer">Charlie Brown</footer>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next "></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4 py-4 border-top">
+            <p class="">&copy; 2024 My Blog. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 2,
+                },
+                992: {
+                    slidesPerView: 3,
+                },
+            },
+            centeredSlides: true,
+            loop: true,
+        });
+    </script>
+</body>
+
+</html>

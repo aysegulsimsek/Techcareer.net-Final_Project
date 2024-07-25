@@ -28,3 +28,9 @@ body {
 .navbar {
     padding: 50px;
 }
+
+input,
+textarea {
+    outline: none;
+    border: 3px solid black;
+}

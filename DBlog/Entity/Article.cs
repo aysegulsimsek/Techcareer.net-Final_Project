@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DBlog.Models
+namespace DBlog.Entity
 {
     public class Article
     {
@@ -13,10 +13,9 @@ namespace DBlog.Models
         public string? ImageFile { get; set; }
         public DateTime PublishedDate { get; set; }
 
-        // User ilişkisini kaldırdık
-        // public int UserId { get; set; }
-        // public User? User { get; set; } 
+        public int UserId { get; set; }
+        public User User { get; set; } = null!;
 
-        public ICollection<Comment>? Comments { get; set; } // Comment ilişkisini koruduk
+        public ICollection<Comment>? Comments { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DBlog.Models
+namespace DBlog.Entity
 {
     public class Comment
     {
@@ -9,8 +9,10 @@ namespace DBlog.Models
         public int CommentId { get; set; }
         public string? Content { get; set; }
         public DateTime CommentDate { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; } = null!;
 
         public int ArticleId { get; set; }
-        public Article? Article { get; set; }
+        public Article Article { get; set; } = null!;
     }
 }
