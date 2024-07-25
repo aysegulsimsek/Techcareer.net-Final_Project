@@ -6,10 +6,10 @@
 }
 <div class="w-75 m-auto rounded border text-center p-5 mt-5 bg-light">
     <h2>Delete Confirmation</h2>
-    <p>Are you sure you want to delete the article titled "@Model.Title"?</p>
+    <p> "@Model.Title" başlıklı makaleyi silmek istediğinizden emin misiniz??</p>
 
     <form method="post" asp-action="DeleteConfirmed" asp-route-id="@Model.Id">
-        <button type="submit" class="btn btn-danger">Yes, delete it</button>
-        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-danger">Evet, sil</button>
+        <a asp-action="Index" class="btn btn-secondary">İptal</a>
     </form>
 </div>

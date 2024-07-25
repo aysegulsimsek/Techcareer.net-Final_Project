@@ -8,19 +8,16 @@
 <div class="container">
     <h1>@Model.Title</h1>
     <div class="d-flex gap-2 mb-3 justify-content-end">
-        <!-- Edit Butonu -->
 
 
         <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning">Edit</a>
-        <!-- Delete Butonu -->
         <form method="post" asp-action="Delete" asp-route-id="@Model.Id">
-            <button type="submit" class="btn btn-danger">Delete</button>
+            <button type="submit" class="btn btn-danger">sil</button>
         </form>
 
 
     </div>
 
-    <!-- Makale resmi -->
     @if (!string.IsNullOrEmpty(Model.ImageFile))
     {
         <div class="mb-3">
@@ -30,12 +27,10 @@
 
     <p>@Model.Content</p>
 
-    <!-- Makalenin yayım tarihi -->
     <p><strong>Published on:</strong> @Model.PublishedDate.ToString("MMMM dd, yyyy")</p>
 
     <h3>Comments</h3>
 
-    <!-- Yorum ekleme formu -->
     <form id="commentForm" method="post" asp-action="AddComment">
         <input type="hidden" name="articleId" value="@Model.Id" />
         <div class="mb-3">
@@ -48,10 +43,9 @@
                 </div>
             }
         </div>
-        <button type="submit" class="btn btn-primary">Add Comment</button>
+        <button type="submit" class="btn btn-primary">Yorum Ekle</button>
     </form>
 
-    <!-- Yorumlar -->
     @if (Model.Comments != null && Model.Comments.Any())
     {
         foreach (var comment in Model.Comments.OrderByDescending(c => c.CommentDate))
@@ -63,31 +57,28 @@
     }
     else
     {
-        <p>No comments yet. Be the first to comment!</p>
+        <p>Henüz yorum yapılmamış. İlk yorum yapan siz olun!</p>
     }
 </div>
 
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Hata mesajını göster
             var errorMessage = document.getElementById('errorMessage');
             if (errorMessage) {
-                alert(errorMessage.textContent); // Hata mesajını alert ile göster
+                alert(errorMessage.textContent);
             }
-
-            // Yorum formunun doğrulamasını yap
             var form = document.getElementById('commentForm');
             var commentContent = document.getElementById('commentContent');
 
             form.addEventListener('submit', function (event) {
                 var content = commentContent.value.trim();
                 if (content === '') {
-                    alert('Comment content cannot be empty.'); // Boş yorum kontrolü
-                    event.preventDefault(); // Formun gönderilmesini engelle
+                    alert('Comment content cannot be empty.');
+                    event.preventDefault();
                 } else if (content.length < 15 || content.length > 100) {
-                    alert('Comment must be between 15 and 100 characters.'); // Karakter uzunluğu kontrolü
-                    event.preventDefault(); // Formun gönderilmesini engelle
+                    alert('Comment must be between 15 and 100 characters.');
+                    event.preventDefault();
                 }
             });
         });
