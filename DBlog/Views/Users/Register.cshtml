@@ -1,0 +1,41 @@
+@{
+    Layout = null;
+    ViewData["Title"] = "Register";
+}
+@model RegisterViewModel
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600&display=swap">
+    <link rel="stylesheet" href="~/css/style.css">
+    <title>Register Page</title>
+</head>
+
+<body>
+    <div class="form-container">
+        <div class="signup-section">
+            <header>Sign Up</header>
+            <form asp-controller="Users" asp-action="Register" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <label asp-for="UserName" hidden></label>
+                <input asp-for="UserName" class="text" placeholder="Username">
+                <label asp-for="Email" hidden></label>
+                <input asp-for="Email" class="text" placeholder="Email">
+                <label asp-for="Password" hidden></label>
+                <input asp-for="Password" class="text" placeholder="Password">
+                <label asp-for="ConfirmPassword" hidden></label>
+                <input asp-for="ConfirmPassword" class="text" placeholder="Confirm Password">
+                <div class="checkbox">
+                    <input type="checkbox">&nbsp; I agree to the terms & conditions
+                </div>
+                <button type="submit">Sign Up</button>
+                <p>Already have an account? <a href="/Users/Login">Sign In</a></p>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

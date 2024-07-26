@@ -7,17 +7,17 @@ namespace DBlog.Entity
         public int UserId { get; set; }
 
         [Required]
-        public string UserName { get; set; } = null!;
+        public string? UserName { get; set; }
 
         public string? Name { get; set; }
 
         [EmailAddress]
         public string? Email { get; set; }
 
-
+        public string? Password { get; set; }
         public string? Image { get; set; }
 
-        public bool IsAdmin { get; set; }
+        // public bool IsAdmin { get; set; }
 
         public List<Comment> Comments { get; set; } = new List<Comment>();
 

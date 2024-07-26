@@ -23,7 +23,12 @@ namespace DBlog.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(5000)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ImageFile")
@@ -33,12 +38,16 @@ namespace DBlog.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
 
                     b.HasIndex("UserId");
 
@@ -84,10 +93,10 @@ namespace DBlog.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
@@ -101,6 +110,10 @@ namespace DBlog.Migrations
 
             modelBuilder.Entity("DBlog.Entity.Article", b =>
                 {
+                    b.HasOne("DBlog.Entity.Comment", null)
+                        .WithMany("Articles")
+                        .HasForeignKey("CommentId");
+
                     b.HasOne("DBlog.Entity.User", "User")
                         .WithMany("Articles")
                         .HasForeignKey("UserId")
@@ -132,6 +145,11 @@ namespace DBlog.Migrations
             modelBuilder.Entity("DBlog.Entity.Article", b =>
                 {
                     b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("DBlog.Entity.Comment", b =>
+                {
+                    b.Navigation("Articles");
                 });
 
             modelBuilder.Entity("DBlog.Entity.User", b =>

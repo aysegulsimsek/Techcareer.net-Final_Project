@@ -4,21 +4,23 @@
     ViewData["Title"] = "Edit Comment";
 }
 
-<h2>Edit Comment</h2>
+<h1>Edit Comment</h1>
 
-<form asp-action="EditCommentPost" method="post">
+<form asp-action="EditComment" method="post">
     <div class="form-group">
         <label asp-for="Content" class="control-label"></label>
         <textarea asp-for="Content" class="form-control"></textarea>
         <span asp-validation-for="Content" class="text-danger"></span>
     </div>
     <input type="hidden" asp-for="CommentId" />
-    <input type="hidden" asp-for="ArticleId" />
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary" />
+        <a asp-action="GetComments" class="btn btn-secondary">Cancel</a>
     </div>
 </form>
 
-
-
-<a class="btn btn-secondary mt-3 m-auto" asp-action="Comments">Back to List</a>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

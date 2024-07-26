@@ -1,4 +1,5 @@
-@model DBlog.Entity.Article
+@model DBlog.Models.ArticleCreateViewModel
+
 @{
     Layout = "_Layout";
 }
@@ -39,6 +40,15 @@
 <body>
     <div class="container container-custom">
         <div class="text-center font-l"><i>Makale Oluştur</i></div>
+        <div>
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert alert-info">
+                    @ViewBag.Message
+                </div>
+            }
+        </div>
+
         <form asp-action="Create" asp-controller="Article" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label asp-for="Title" class="form-label">Makale Başlığı</label>
@@ -47,12 +57,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Content" class="form-label">Makalenizin İçeriği</label>
-                <textarea asp-for="Content" class="textarea form-control" required></textarea>
+                <textarea asp-for="Content" class="form-control" required></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ImageFile" class="form-label">Makalenize Resim Ekleyin</label>
-                <input type="file" asp-for="ImageFile" class="form-control" required />
+                <input type="file" asp-for="ImageFile" class="form-control" />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-success">Oluştur</button>
@@ -61,8 +71,6 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <partial name="_ValidationScriptsPartial" />
 </body>
 
 </html>

@@ -12,7 +12,6 @@
         .card {
             display: flex;
             flex-direction: row;
-            /* Resmi ve içeriği yan yana gösterir */
             border: 1px solid #ddd;
             border-radius: 0.5rem;
             overflow: hidden;
@@ -21,16 +20,12 @@
 
         .card-img-top {
             width: 150px;
-            /* Resim genişliği */
             height: 100%;
-            /* Resim yüksekliği */
             object-fit: cover;
-            /* Resmi kapsayıcıya sığdırır */
         }
 
         .card-body {
             flex: 1;
-            /* İçerik alanının tüm genişliği kaplamasını sağlar */
             padding: 15px;
         }
 
@@ -57,7 +52,6 @@
 
         .card-shadow-yellow {
             box-shadow: 0 4px 8px rgba(255, 215, 0, 0.5);
-            /* Sarı gölge */
         }
     </style>
 </head>
@@ -66,10 +60,8 @@
     <div class="container mt-4">
         <div class="d-flex justify-between align-items-center">
             <h1 class="text-center mx-auto">All Articles</h1>
-            <a class="btn btn-primary" asp-action="Create" asp-controller="Article">Makale Oluştur</a>
+            @* <a class="btn btn-primary" asp-action="Create" asp-controller="Article">Create New Article</a> *@
         </div>
-
-
 
         @if (TempData["SuccessMessage"] != null)
         {
@@ -78,30 +70,39 @@
             </div>
         }
 
-        <div class="row">
-            @foreach (var article in Model)
-            {
-                <div class="col-md-4">
-                    <div class="card card-shadow-yellow">
-                        <div class="card mt-2">
-                            @if (!string.IsNullOrEmpty(article.ImageFile))
-                            {
-                                <img src="@article.ImageFile" class="card-img-top" alt="@article.Title">
-                            }
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">@article.Title</h5>
-                            <p class="card-text">
-                                @Html.Raw(GetShortContent(article.Content))
-                            </p>
-                            <a href="@Url.Action("Details", "Article", new { id = article.Id })" class="btn btn-gold">Read
-                                More</a>
+        @if (Model == null || !Model.Any())
+        {
+            <p>No articles available.</p>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var article in Model)
+                {
+                    <div class="col-md-4">
+                        <div class="card card-shadow-yellow">
+                            <div class="card mt-2">
+                                @if (!string.IsNullOrEmpty(article.ImageFile))
+                                {
+                                    <img src="@article.ImageFile" class="card-img-top" alt="@article.Title">
+                                }
+                                else
+                                {
+                                    <img src="/images/default-image.jpg" class="card-img-top" alt="Default Image">
+                                }
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@article.Title</h5>
+                                <p class="card-text">
+                                    @Html.Raw(GetShortContent(article.Content))
+                                </p>
+                                <a href="@Url.Action("Details", "Article", new { id = article.Id })" class="btn btn-gold">Read More</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-            }
-        </div>
+                }
+            </div>
+        }
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

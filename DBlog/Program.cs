@@ -12,44 +12,57 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-// Add DbContext
+// Configure database context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("database")));
 
-
-
-// Add UserRepository
-
+// Register repositories
 builder.Services.AddScoped<IPostRepository, EfPostRepository>();
-// builder.Services.AddScoped<ITagRepository,EfTagRepository>();
+// builder.Services.AddScoped<ITagRepository, EfTagRepository>();
 builder.Services.AddScoped<ICommentRepository, EfCommentRepository>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
-// Add Cookie Authentication
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-
+// Configure authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+    options.LoginPath = "/Users/Login";
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
 SeedData.TestVerileriniDoldur(app);
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
-// Add Authentication and Authorization
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "article_details",
+    pattern: "article/details/{articleId}",
+    defaults: new { controller = "Article", action = "Details" });
+app.MapControllerRoute(
+    name: "editArticle",
+    pattern: "article/edit/{id}",
+    defaults: new { controller = "Article", action = "Edit" });
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Article}/{action=Home}/{id?}");
+app.MapControllerRoute(
+    name: "profile",
+    pattern: "users/profile/{userId}",
+    defaults: new { controller = "Users", action = "Profile" });
+
+
 
 app.MapRazorPages();
 

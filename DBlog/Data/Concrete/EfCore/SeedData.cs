@@ -1,8 +1,5 @@
-using DBlog.Data;
 using DBlog.Entity;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace DBlog.Data.Concrete.EfCore
 {
@@ -19,31 +16,34 @@ namespace DBlog.Data.Concrete.EfCore
                     context.Database.Migrate();
                 }
 
+
                 if (!context.Users.Any())
                 {
                     context.Users.AddRange(
                         new User
                         {
                             UserName = "admin",
-                            Name = "Admin",
-                            Email = "info@admin.com",
-                            Image = "p2.jpg",
-                            IsAdmin = true
+                            Name = "Ayşegül Şimşek",
+                            Email = "info@asimsek.com",
+                            Password = "123456",
+                            Image = "p3.jpg"
                         },
                         new User
                         {
                             UserName = "userOne",
-                            Name = "UserOne",
-                            Email = "info@userone.com",
-                            Image = "p1.jpg",
-                            IsAdmin = false
+                            Name = "User One",
+                            Email = "info@user.com",
+                            Password = "123456",
+                            Image = "p2.jpg"
                         }
+
+
                     );
                     context.SaveChanges();
                 }
-
                 if (!context.Articles.Any())
                 {
+
                     context.Articles.AddRange(
                         new Article
                         {
@@ -51,12 +51,12 @@ namespace DBlog.Data.Concrete.EfCore
                             Title = "First Article",
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             PublishedDate = DateTime.Now.AddDays(-10),
-                            ImageFile = "/img/1.jpg",
-                            UserId = 1,
+                            ImageFile = "/img/5.jpg",
+                            UserId = 3,
                             Comments = new List<Comment>
                             {
-                                new Comment { Content = "başarılı", UserId = 1 },
-                                new Comment { Content = "başarılı, tavsiye ederim", UserId = 2 }
+                                    new() { Content = "başarılı", UserId = 3, CommentDate = DateTime.Now },
+                                    new() { Content = "başarılı, tavsiye ederim", UserId = 1, CommentDate = DateTime.Now }
                             }
                         },
                         new Article
@@ -69,8 +69,8 @@ namespace DBlog.Data.Concrete.EfCore
                             UserId = 1,
                             Comments = new List<Comment>
                             {
-                                new Comment { Content = "başarılı", UserId = 1 },
-                                new Comment { Content = "başarılı, tavsiye ederim", UserId = 2 }
+                                    new() { Content = "başarılı", UserId = 1, CommentDate = DateTime.Now },
+                                    new() { Content = "başarılı, tavsiye ederim", UserId = 2, CommentDate = DateTime.Now }
                             }
                         },
                         new Article
@@ -83,8 +83,8 @@ namespace DBlog.Data.Concrete.EfCore
                             UserId = 2,
                             Comments = new List<Comment>
                             {
-                                new Comment { Content = "başarılı", UserId = 1 },
-                                new Comment { Content = "başarılı, tavsiye ederim", UserId = 2 }
+                                    new() { Content = "başarılı", UserId = 1, CommentDate = DateTime.Now },
+                                    new() { Content = "başarılı, tavsiye ederim", UserId = 2, CommentDate = DateTime.Now }
                             }
                         },
                         new Article
@@ -97,8 +97,8 @@ namespace DBlog.Data.Concrete.EfCore
                             UserId = 1,
                             Comments = new List<Comment>
                             {
-                                new Comment { Content = "başarılı", UserId = 1 },
-                                new Comment { Content = "başarılı, tavsiye ederim", UserId = 2 }
+                                    new() { Content = "başarılı", UserId = 1, CommentDate = DateTime.Now },
+                                    new() { Content = "başarılı, tavsiye ederim", UserId = 2, CommentDate = DateTime.Now }
                             }
                         },
                         new Article
@@ -111,8 +111,8 @@ namespace DBlog.Data.Concrete.EfCore
                             UserId = 2,
                             Comments = new List<Comment>
                             {
-                                new Comment { Content = "başarılı", UserId = 1 },
-                                new Comment { Content = "başarılı, tavsiye ederim", UserId = 2 }
+                                    new() { Content = "başarılı", UserId = 1, CommentDate = DateTime.Now },
+                                    new() { Content = "başarılı, tavsiye ederim", UserId =2, CommentDate = DateTime.Now }
                             }
                         },
                         new Article
@@ -125,8 +125,8 @@ namespace DBlog.Data.Concrete.EfCore
                             UserId = 2,
                             Comments = new List<Comment>
                             {
-                                new Comment { Content = "başarılı", UserId = 1 },
-                                new Comment { Content = "başarılı, tavsiye ederim", UserId = 2 }
+                                    new() { Content = "başarılı", UserId = 1, CommentDate = DateTime.Now },
+                                    new() { Content = "başarılı, tavsiye ederim", UserId = 2, CommentDate = DateTime.Now }
                             }
                         }
                     );
@@ -134,8 +134,6 @@ namespace DBlog.Data.Concrete.EfCore
                 }
             }
         }
-
-
-
     }
 }
+

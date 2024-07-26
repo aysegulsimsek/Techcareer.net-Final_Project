@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace DBlog.Entity
@@ -14,5 +13,11 @@ namespace DBlog.Entity
 
         public int ArticleId { get; set; }
         public Article Article { get; set; } = null!;
+        public List<Article> Articles { get; set; } = new List<Article>();
+
+        public static implicit operator List<object>(Comment v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

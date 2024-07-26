@@ -1,0 +1,44 @@
+@model DBlog.ViewModels.ArticleViewModel
+
+@if (Model.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
+<style>
+    .image-wrapper {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        flex: 1;
+    }
+
+    .content {
+        flex: 1;
+    }
+</style>
+<h2 class="text-xl-center">My Blog</h2>
+<div class="d-flex justify-content-end align-items-center">
+    <a class="btn btn-success" asp-action="Create" asp-controller="Article">Create New Article</a>
+</div>
+<ul>
+    @foreach (var article in Model.Articles)
+    {
+        <li class="d-flex border p-3 rounded-1 m-4 list-unstyled">
+            <div class="ml-auto">
+                <h3>@article.Title</h3>
+                <p>@article.Content</p>
+                <p>Published on: @article.PublishedDate.ToShortDateString()</p>
+            </div>
+
+            <div class="mr-auto image-wrapper">
+                @if (!string.IsNullOrEmpty(article.ImageFile))
+                {
+                    <img style="width: 250px;" src="@article.ImageFile" alt="@article.Title" />
+                }
+            </div>
+
+        </li>
+    }
+</ul>

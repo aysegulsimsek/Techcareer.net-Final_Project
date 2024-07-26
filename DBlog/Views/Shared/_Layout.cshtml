@@ -25,13 +25,13 @@
             transform: translateY(5px);
         }
 
-        .container {
-            padding-top: 20px;
-        }
-
         body {
             padding: 0;
             margin: 0;
+        }
+
+        .container {
+            padding-top: 20px;
         }
     </style>
     @RenderSection("Styles", required: false)
@@ -39,34 +39,39 @@
 
 <body>
 
-
-
     <nav class="navbar navbar-expand-lg navbar-custom">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse mr-auto" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
+
+                @if (!User.IsInRole("admin"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Article" asp-action="MyBlog">My Blog</a>
+                    </li>
+                }
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Article" asp-action="Home">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Article" asp-action="Index">Articles</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Article" asp-action="Comments">Comments</a>
-                </li>
+                @if (User.IsInRole("admin"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Article" asp-action="GetComments">Comments</a>
+                    </li>
+                }
             </ul>
-        </div>
-        <div class="navbar-nav ml-auto">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item d-flex align-items-center ml-auto">
-                    @if (User.Identity?.IsAuthenticated == true)
-                    {
-
-                    <li class="nav-item d-flex align-items-center">
-                        <a href="#" class="nav-link nav-link d-flex align-items-center gap-1 ">@User.Identity.Name
+            <ul class="navbar-nav ms-auto">
+                @if (User.Identity!.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a asp-controller="Users" asp-action="Profile" class="nav-link d-flex align-items-center gap-1">
+                            @User.Identity.Name
                             <span class="material-symbols-outlined">account_circle</span>
                         </a>
                     </li>
@@ -76,35 +81,20 @@
                             <span class="material-symbols-outlined">logout</span>
                         </a>
                     </li>
-                    }
-                    else
-                    {
+
+
+                }
+                else
+                {
                     <li class="nav-item">
                         <a asp-controller="Users" asp-action="Login" class="nav-link">Login</a>
                     </li>
-                    }</li>
+                }
 
             </ul>
         </div>
-
-
     </nav>
-    @* <ul class="navbar-nav ms-auto">
 
-    @if (User.Identity?.IsAuthenticated == true)
-    {
-
-    <li class="nav-item">
-    <a href="#" class="nav-link">@User.UserName</a>
-    </li>
-    }
-    else
-    {
-    <li class="nav-item">
-    <a asp-controller="Users" asp-action="Login" class="nav-link">Login</a>
-    </li>
-    }
-    </ul> *@
     <div class="container">
         @RenderBody()
     </div>
