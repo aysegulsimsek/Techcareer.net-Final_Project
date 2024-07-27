@@ -21,7 +21,7 @@ namespace DBlog.Data.Concrete
         // public async Task<User?> GetUserById(int id)
         // {
         //     var user = await _context.Users.FindAsync(id);
-        //     return user; // Kullanıcı bulunamazsa null döndür
+        //     return user; 
         // }
         public void CreateUser(User user)
         {
@@ -36,7 +36,6 @@ namespace DBlog.Data.Concrete
 
         public Task UpdateUser(User user)
         {
-            // Assuming you need to update user details
             _context.Users.Update(user);
             return SaveChangesAsync();
         }
