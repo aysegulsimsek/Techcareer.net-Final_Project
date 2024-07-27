@@ -317,7 +317,6 @@ namespace DBlog.Controllers
 
 
 
-        // Yorum silme
         public async Task<IActionResult> DeleteComment(int id)
         {
             var comment = await _commentRepository.Comments
