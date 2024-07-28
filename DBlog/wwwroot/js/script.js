@@ -1,11 +1,7 @@
-// const signInBtnLink = document.querySelector(".signInBtnLink");
-// const signUpBtnLink = document.querySelector(".signUpBtnLink");
+let list = document.querySelectorAll(".navigation li");
 
-// const container = document.querySelector(".container");
-
-// signInBtnLink.addEventListener("click", () => {
-//   container.classList.toggle("active");
-// });
-// signUpBtnLink.addEventListener("click", () => {
-//   container.classList.toggle("active");
-// });
+function activeLink() {
+    list.forEach((item) => item.classList.remove("active"));
+    this.classList.add("active");
+}
+list.forEach((item) => item.addEventListener("click", activeLink));

@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\DBlog.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\css\\menu_styles.css",
+      "PackagePath": "staticwebassets\\css\\menu_styles.css"
+    },
+    {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\css\\profile.css",
       "PackagePath": "staticwebassets\\css\\profile.css"
     },
