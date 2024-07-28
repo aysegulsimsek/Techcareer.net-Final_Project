@@ -8,9 +8,24 @@
     <link href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
+        body {
+            background: linear-gradient(to bottom right, #f0f8ff, #ffffff);
+            background-image: radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+                radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            text-align: center;
+            min-height: 400px;
+        }
+
+        .container {
+            max-width: max-content;
+            padding: 0;
+        }
+
         .hero {
-            background-image: url('https://w0.peakpx.com/wallpaper/21/585/HD-wallpaper-missed-spring-bird-blue-sky-do%C4%9Fa-forest-green-natural-nature-spring-stream-sun.jpg');
-            background-size: cover;
+            background-image: url('https://img.freepik.com/premium-photo/abstract-background-with-moving-dots-lines-network-connection-structure-futuristic-illustration-digital-technology-design-3d-rendering_658411-96.jpg?w=360');
+            background-size: contain;
             background-position: center;
             color: #fff;
             padding: 80px 0;
@@ -31,7 +46,7 @@
 
         .testimonial {
             background-color: #f8f9fa;
-            padding: 40px 0;
+            padding: 50px 0;
             position: relative;
             overflow: hidden;
         }
@@ -58,6 +73,8 @@
             justify-content: center;
             width: 100%;
             box-sizing: border-box;
+            margin-right: 20px;
+            padding: 0 30px;
         }
 
         .swiper-pagination {
@@ -65,39 +82,75 @@
         }
 
         .swiper-button-next {
-            right: 0px;
-            top: 40%;
+            right: 10px;
+            top: 50%;
             transform: translateY(-50%);
             z-index: 10;
+            font-weight: 900;
+            color: #fff;
+            transition: all .3s ease-in;
+        }
+
+        .swiper-button-next:hover {
+            color: #a3a3a3;
         }
 
         .swiper-button-prev {
-            left: -0px;
-            top: 40%;
+            left: 10px;
+            top: 50%;
             transform: translateY(-50%);
             z-index: 10;
+            font-weight: 900;
+            color: #fff;
+            transition: all .3s ease-in;
+        }
+
+        .swiper-button-prev:hover {
+            color: #a3a3a3;
         }
 
         body {
             padding: 0;
             margin: 0;
         }
+
+        .test-md {
+            padding: 0 30px;
+        }
+
+        .swiper-pagination-bullet.swiper-pagination-bullet-active {
+            background-color: #696969;
+        }
+
+        .footer {
+            width: 100%;
+            background-color: #fff;
+            color: #343a40;
+            border-top: none;
+            background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+            color: #666666;
+            font-family: 'Open Sans', sans-serif;
+            font-size: small;
+
+        }
+
+        .h2_color {
+            color: #343a40;
+        }
     </style>
 </head>
 
 <body>
-    <div class="">
-
-
-        <div class="hero w-75 m-auto mt-5">
+    <div class="user-select-none w-100">
+        <div class="hero m-auto mt-5 rounded-3 w-75">
             <div class="container hero-text">
-                <h1 class="display-4">Welcome to My Blog</h1>
-                <p class="lead">Your go-to place for insightful articles and updates.</p>
+                <h1 class="display-4 fw-bold">Welcome to My Blog</h1>
+                <p class="lead fw-bold">Your go-to place for insightful articles and updates.</p>
                 <a asp-controller="Article" asp-action="Index" class="btn btn-light btn-lg">Read Our Articles</a>
             </div>
         </div>
 
-        <div class="container mt-5">
+        <div class="container-mid mt-5 m-auto w-75">
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="feature">
@@ -129,9 +182,9 @@
             </div>
         </div>
 
-        <div class="testimonial w-75 m-auto mt-5">
-            <div class="container">
-                <h2 class="text-center mb-4">Okurlarımız Ne Diyor?</h2>
+        <div class="testimonial m-auto mt-5 rounded-2  w-75">
+            <div class="container test-md">
+                <h2 class="text-center mb-4 h2_color">Okurlarımız Ne Diyor?</h2>
                 <div class="swiper-container">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
@@ -139,9 +192,9 @@
                                 <img src="https://th.bing.com/th/id/R.c11b6f38dffc24a4508217513b0e50bd?rik=Pt%2bkITlukiMkWg&riu=http%3a%2f%2fwww.emmegi.co.uk%2fwp-content%2fuploads%2f2019%2f01%2fUser-Icon.jpg&ehk=zjS04fF4nxx%2bpkvRPsSezyic3Z7Yfu%2fuoT75KnbNv1Y%3d&risl=&pid=ImgRaw&r=0"
                                     alt="John Doe" class="rounded-circle me-3" style="width: 80px; height: 80px;">
                                 <div>
-                                    <p class="lead">"Güncel bilgiler ve anlayışlı bilgiler için harika bir kaynak
+                                    <p class="lead mb-4">"Güncel bilgiler ve anlayışlı bilgiler için harika bir kaynak
                                         Makaleler!"</p>
-                                    <footer class="blockquote-footer">John Doe</footer>
+                                    <footer class="blockquote-footer mt-2">John Doe</footer>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +206,7 @@
                                     <p class="lead">"konuların çeşitliliğini seviyorum. herkes için bir şey
                                         var!"
                                     </p>
-                                    <footer class="blockquote-footer">Jane Smith</footer>
+                                    <footer class="blockquote-footer mt-2">Jane Smith</footer>
                                 </div>
                             </div>
                         </div>
@@ -164,7 +217,7 @@
                                 <div>
                                     <p class="lead">"Bilgi sahibi olmak isteyen herkese şiddetle tavsiye ederim."
                                     </p>
-                                    <footer class="blockquote-footer">Emily Johnson</footer>
+                                    <footer class="blockquote-footer mt-2">Emily Johnson</footer>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +227,7 @@
                                     alt="Alice Cooper" class="rounded-circle me-3" style="width: 80px; height: 80px;">
                                 <div>
                                     <p class="lead">"Makaleler iyi araştırılmış ve ilgi çekici!"</p>
-                                    <footer class="blockquote-footer">Alice Cooper</footer>
+                                    <footer class="blockquote-footer mt-2">Alice Cooper</footer>
                                 </div>
                             </div>
                         </div>
@@ -184,7 +237,7 @@
                                     class="rounded-circle me-3" style="width: 80px; height: 80px;">
                                 <div>
                                     <p class="lead">"Harika bir bilgi ve ilham kaynağı."</p>
-                                    <footer class="blockquote-footer">Bob Marley</footer>
+                                    <footer class="blockquote-footer mt-2">Bob Marley</footer>
                                 </div>
                             </div>
                         </div>
@@ -195,22 +248,25 @@
                                     alt="Charlie Brown" class="rounded-circle me-3" style="width: 80px; height: 80px;">
                                 <div>
                                     <p class="lead">"Güncel trendlerle güncel kalmak için en iyi blog!"</p>
-                                    <footer class="blockquote-footer">Charlie Brown</footer>
+                                    <footer class="blockquote-footer mt-2">Charlie Brown</footer>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-pagination"></div>
-                    <div class="swiper-button-next "></div>
-                    <div class="swiper-button-prev"></div>
-                </div>
-            </div>
-        </div>
 
-        <div class="text-center mt-4 py-4 border-top">
-            <p class="">&copy; 2024 My Blog. All rights reserved.</p>
+                </div>
+
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next "></div>
+            <div class="swiper-button-prev"></div>
         </div>
+        <footer class="text-center footer mt-4 py-4 w-100">
+            <p class="mt-2">&copy; 2024 My Blog. All rights reserved.</p>
+        </footer>
+
     </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
@@ -238,6 +294,7 @@
             loop: true,
         });
     </script>
+
 </body>
 
 </html>

@@ -114,7 +114,7 @@ namespace DBlog.Controllers
             {
                 return NotFound();
             }
-            var user = _userRepository.Users.Include(x => x.Articles).Include(x => x.Comments).ThenInclude(x => x.Articles).FirstOrDefault(x => x.UserName == username);
+            var user = _userRepository.Users.Include(x => x.Articles).Include(x => x.Comments).FirstOrDefault(x => x.UserName == username);
 
             if (user == null)
             {

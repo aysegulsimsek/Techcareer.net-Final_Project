@@ -21,8 +21,20 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\1.jpeg",
+      "PackagePath": "staticwebassets\\img\\1.jpeg"
+    },
+    {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\17527387806588.png",
       "PackagePath": "staticwebassets\\img\\17527387806588.png"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\2.jpg",
+      "PackagePath": "staticwebassets\\img\\2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\3.jpg",
+      "PackagePath": "staticwebassets\\img\\3.jpg"
     },
     {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\3718cc19-0323-44e4-97a7-c93fcc99e6e3.png",
@@ -35,6 +47,10 @@
     {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\5.jpg",
       "PackagePath": "staticwebassets\\img\\5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\5G.jpg",
+      "PackagePath": "staticwebassets\\img\\5G.jpg"
     },
     {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\6.jpg",
@@ -51,6 +67,26 @@
     {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\79acd116-c7bf-4449-ad4f-ae4a78d320fe.jpg",
       "PackagePath": "staticwebassets\\img\\79acd116-c7bf-4449-ad4f-ae4a78d320fe.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\R.jpg",
+      "PackagePath": "staticwebassets\\img\\R.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\Tech.jpg",
+      "PackagePath": "staticwebassets\\img\\Tech.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\Tech2.jpg",
+      "PackagePath": "staticwebassets\\img\\Tech2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\Tech3.jpg",
+      "PackagePath": "staticwebassets\\img\\Tech3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\Tech4.jpg",
+      "PackagePath": "staticwebassets\\img\\Tech4.jpg"
     },
     {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\aı.jpg",
@@ -79,10 +115,6 @@
     {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\p3.png",
       "PackagePath": "staticwebassets\\img\\p3.png"
-    },
-    {
-      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\js\\profile.js",
-      "PackagePath": "staticwebassets\\js\\profile.js"
     },
     {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\js\\script.js",

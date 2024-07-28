@@ -51,7 +51,7 @@ namespace DBlog.Data.Concrete.EfCore
                             Title = "First Article",
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             PublishedDate = DateTime.Now.AddDays(-10),
-                            ImageFile = "/img/5.jpg",
+                            ImageFile = "/img/2.jpg",
                             UserId = 3,
                             Comments = new List<Comment>
                             {
@@ -65,7 +65,7 @@ namespace DBlog.Data.Concrete.EfCore
                             Title = "Second Article",
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             PublishedDate = DateTime.Now.AddDays(-50),
-                            ImageFile = "/img/6.jpg",
+                            ImageFile = "/img/3.jpg",
                             UserId = 1,
                             Comments = new List<Comment>
                             {
@@ -79,7 +79,7 @@ namespace DBlog.Data.Concrete.EfCore
                             Title = "Third Article",
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
                             PublishedDate = DateTime.Now.AddDays(-80),
-                            ImageFile = "/img/4.jpg",
+                            ImageFile = "/img/5G.jpg",
                             UserId = 2,
                             Comments = new List<Comment>
                             {

@@ -14,7 +14,6 @@ namespace DBlog.Entity
         public string Title { get; set; } = null!;
 
         [Required(ErrorMessage = "İçerik gereklidir")]
-        [StringLength(5000, ErrorMessage = "İçerik 5000 karakterden uzun olmamalıdır")]
         public string Content { get; set; } = null!;
 
         public string? ImageFile { get; set; }

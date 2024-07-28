@@ -127,3 +127,5 @@ C:\Users\ASUS\OneDrive\Masaüstü\blog\DBlog\obj\Debug\net8.0\refint\DBlog.dll
 C:\Users\ASUS\OneDrive\Masaüstü\blog\DBlog\obj\Debug\net8.0\DBlog.pdb
 C:\Users\ASUS\OneDrive\Masaüstü\blog\DBlog\obj\Debug\net8.0\DBlog.genruntimeconfig.cache
 C:\Users\ASUS\OneDrive\Masaüstü\blog\DBlog\obj\Debug\net8.0\ref\DBlog.dll
+C:\Users\ASUS\OneDrive\Masaüstü\blog\DBlog\bin\Debug\net8.0\package-lock.json
+C:\Users\ASUS\OneDrive\Masaüstü\blog\DBlog\bin\Debug\net8.0\package.json
