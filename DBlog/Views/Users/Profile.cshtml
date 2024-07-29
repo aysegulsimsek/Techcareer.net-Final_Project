@@ -1,14 +1,18 @@
-﻿@model User
+﻿@model DBlog.Models.ProfileViewModel
+@{
+    ViewData["Title"] = "Profile";
+}
 
 <div class="row">
     <div class="col-md-2">
         <div class="bg-white p-2">
-            <img src="~/img/@Model.Image" class="img-fluid" alt="">
+            <img src="~/img/@Model.User.Image" class="img-fluid" alt="@Model.User.Name">
         </div>
     </div>
     <div class="col-md-10">
         <div class="bg-white p-4">
-            <h5>@Model.Name</h5>
+            <h5>@Model.User.Name</h5>
+            <p>@Model.User.Email</p>
             <hr>
 
             <div id="posts">
@@ -16,20 +20,24 @@
                 <ul class="list-group">
                     @* @foreach (var post in Model.Articles)
                     {
-                    <li class="list-group-item"><i class="bi bi-caret-right-fill"></i><a
-                    href="/posts/details/@post.Url">@post.Title</a></li>
+                    <li class="list-group-item">
+                    <i class="bi bi-caret-right-fill"></i>
+                    <a href="/posts/details/@post.Url">@post.Title</a>
+                    </li>
                     } *@
                 </ul>
             </div>
             <div id="comments">
                 <h5 class="my-4">Yorumlar</h5>
                 <ul class="list-group">
-                    @* @foreach (var comment in Model.Comments)
+                    @foreach (var comment in Model.Comments)
                     {
-                    <li class="list-group-item"><i class="bi bi-caret-right-text-fill"></i>@comment.Content
-                    <i><u>[@comment.Articles.Content]</u></i>
-                    </li>
-                    } *@
+                        <li class="list-group-item">
+                            <i class="bi bi-caret-right-text-fill"></i>
+                            @comment.Content
+                            <i><u>[@comment.Article.Content]</u></i>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>

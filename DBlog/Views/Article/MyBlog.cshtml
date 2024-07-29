@@ -1,144 +1,157 @@
 @model DBlog.ViewModels.ArticleViewModel
+@{
+    Layout = "_Layout";
+}
+@section Styles {
+    <style>
+        a {
+            text-decoration: none;
+        }
 
+        body {
+
+            background: linear-gradient(to bottom right, #f0f8ff, #ffffff);
+            background-image: radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+                radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+
+            text-align: center;
+            min-height: 600px;
+        }
+
+        .container {
+            max-width: max-content;
+            padding: 0;
+        }
+
+        .cont_hugh {
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: max-content;
+
+
+        }
+
+        .blog_title {
+            color: #333;
+            font-size: 2.5em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            margin: 20px 0 0 0;
+        }
+
+        .article_title {
+            color: #4c4b4b;
+            font-size: 2em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+        }
+
+        .image-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            width: 100%;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 2rem;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ccc;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+
+        .article_content {
+            text-align: justify;
+        }
+
+        .hero {
+            margin-left: auto;
+        }
+
+        .main_header {
+            text-align: center;
+        }
+
+        .blog_title {
+            flex-grow: 1;
+            text-align: center;
+            margin-left: 5rem;
+            user-select: none;
+        }
+
+        .footer {
+            width: 100%;
+            background-color: #fff;
+            color: #343a40;
+            border-top: none;
+            background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+            color: #666666;
+            font-family: 'Open Sans', sans-serif;
+            font-size: small;
+
+        }
+    </style>
+}
 @if (Model.ErrorMessage != null)
 {
     <div class="alert alert-danger">
         @Model.ErrorMessage
     </div>
 }
-<style>
-    body {
-        background: linear-gradient(to bottom right, #f0f8ff, #ffffff);
-        background-image: radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-            radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-        background-size: 20px 20px;
-        background-position: 0 0, 10px 10px;
-
-        text-align: center;
-        min-height: 400px;
-    }
-
-    .container {
-        max-width: max-content;
-        padding: 0;
-    }
-
-    .cont_hugh {
-        padding: 2rem;
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-
-    }
-
-    .blog_title {
-        color: #333;
-        font-size: 2.5em;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        margin: 20px 0 0 0;
-    }
-
-    .article_title {
-        color: #4c4b4b;
-        font-size: 2em;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        margin: 20px 0;
-    }
-
-    .image-wrapper {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        width: 100%;
-    }
-
-    .image-wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 2rem;
-    }
-
-    .content {
-        flex: 1;
-    }
-
-    hr {
-        border: 0;
-        height: 1px;
-        background: #ccc;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        margin: 20px 0;
-    }
-
-    .article_content {
-        text-align: justify;
-    }
-
-    .hero {
-        margin-left: auto;
-    }
-
-    .main_header {
-        text-align: center;
-    }
-
-    .blog_title {
-        flex-grow: 1;
-        text-align: center;
-        margin-left: 5rem;
-        user-select: none;
-    }
-
-    .footer {
-        width: 100%;
-        background-color: #fff;
-        color: #343a40;
-        border-top: none;
-        background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
-        color: #666666;
-        font-family: 'Open Sans', sans-serif;
-        font-size: small;
-
-    }
-</style>
-<div class="container_bg mt-3 w-75 m-auto">
-    <div class="bg-white cont_hugh">
-        <div class="d-flex align-items-center justify-content-between main_header">
-            <h2 class=" blog_title">My Blog</h2>
-            <div class="d-flex justify-content-end align-items-center hero">
-                <a class="btn btn-success" asp-action="Create" asp-controller="Article">Create New Article</a>
-            </div>
-        </div>
-        <hr class="hr">
-
-        <div class=" p-3 rounded-1 m-4 list-unstyled">
-            @foreach (var article in Model.Articles)
-            {
-                <i class="d-flex justify-content-end mb-4 user-select-none">Published on:
-                    @article.PublishedDate.ToShortDateString()</i>
-                <div class="mr-auto image-wrapper">
-                    @if (!string.IsNullOrEmpty(article.ImageFile))
-                    {
-                        <img style="user-select: none;" src="@article.ImageFile" alt="@article.Title" />
-                    }
+<div class="container">
+    <div class="container_bg mt-3 w-75 m-auto">
+        <div class="bg-white cont_hugh">
+            <div class="d-flex align-items-center justify-content-between main_header">
+                <h2 class=" blog_title">My Blog</h2>
+                <div class="d-flex justify-content-end align-items-center hero">
+                    <a class="btn btn-success" asp-action="Create" asp-controller="Article">Create New Article</a>
                 </div>
+            </div>
+            <hr class="hr">
 
-                <li class="">
-                    <div class="ml-auto">
-                        <h3 class="article_title">@article.Title</h3>
-                        <p class="article_content"> @Html.Raw(GetShortContent(article.Content))<a
-                                class="text-decoration-none" href=" @Url.Action("Details", "Article", new
+            <div class=" p-3 rounded-1 m-4 list-unstyled">
+                @foreach (var article in Model.Articles)
+                {
+                    <i class="d-flex justify-content-end mb-4 user-select-none">Published on:
+                        @article.PublishedDate.ToShortDateString()</i>
+                    <div class="mr-auto image-wrapper">
+                        @if (!string.IsNullOrEmpty(article.ImageFile))
+                        {
+                            <img style="user-select: none;" src="@article.ImageFile" alt="@article.Title" />
+                        }
+                    </div>
+
+                    <li class="">
+                        <div class="ml-auto">
+                            <h3 class="article_title">@article.Title</h3>
+                            <p class="article_content"> @Html.Raw(GetShortContent(article.Content))<a
+                                    class="text-decoration-none" href=" @Url.Action("Details", "Article", new
                                 {
                                     id = article.Id
                                 })">devamını gör</a>
-                        </p>
+                            </p>
 
-                    </div>
-                </li>
-                <hr class="hr">
-            }
+                        </div>
+                    </li>
+                    <hr class="hr">
+                }
 
+            </div>
         </div>
     </div>
 </div>
@@ -160,4 +173,5 @@
 
         return content.Substring(0, maxLength) + "...";
     }
+
 }
