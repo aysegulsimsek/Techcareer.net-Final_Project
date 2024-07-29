@@ -8,7 +8,8 @@ namespace DBlog.Data.Abstract
     {
         IQueryable<User> Users { get; }
         void CreateUser(User user);
-        // Task<User?> GetUserById(int id);
+        Task<User?> GetUserById(int id);
+
         Task SaveChangesAsync();
         Task UpdateUser(User user);
     }

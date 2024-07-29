@@ -18,11 +18,11 @@ namespace DBlog.Data.Concrete
 
         public IQueryable<User> Users => _context.Users;
 
-        // public async Task<User?> GetUserById(int id)
-        // {
-        //     var user = await _context.Users.FindAsync(id);
-        //     return user; 
-        // }
+        public async Task<User?> GetUserById(int id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
+
         public void CreateUser(User user)
         {
             _context.Users.Add(user);
@@ -38,6 +38,11 @@ namespace DBlog.Data.Concrete
         {
             _context.Users.Update(user);
             return SaveChangesAsync();
+        }
+
+        public object GetUserByUserName(string userName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

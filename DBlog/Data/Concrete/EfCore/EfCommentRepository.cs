@@ -48,5 +48,11 @@ namespace DBlog.Data.Concrete
         {
             return await _context.SaveChangesAsync();
         }
+        public async Task<IEnumerable<Comment>> GetUserCommentsAsync(int userId)
+        {
+            return await _context.Comments
+                .Where(c => c.UserId == userId)
+                .ToListAsync();
+        }
     }
 }

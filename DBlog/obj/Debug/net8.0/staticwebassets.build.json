@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "mjshbyy64M06q6/tQ8a6TqDry8KdWe0dJv8DF7ly6yM=",
+  "Hash": "EXgL8JFTge4i3xx6sIMHQW8Est1TmbZEZAiZtOpju40=",
   "Source": "DBlog",
   "BasePath": "_content/DBlog",
   "Mode": "Default",
@@ -604,6 +604,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img\\Tech4.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\user.png",
+      "SourceId": "DBlog",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\",
+      "BasePath": "_content/DBlog",
+      "RelativePath": "img/user.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\user.png"
     },
     {
       "Identity": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\js\\script.js",

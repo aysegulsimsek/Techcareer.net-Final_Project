@@ -121,6 +121,10 @@
       "PackagePath": "staticwebassets\\img\\p3.png"
     },
     {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\user.png",
+      "PackagePath": "staticwebassets\\img\\user.png"
+    },
+    {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\js\\script.js",
       "PackagePath": "staticwebassets\\js\\script.js"
     },

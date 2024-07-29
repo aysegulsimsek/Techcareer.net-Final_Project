@@ -108,37 +108,28 @@ namespace DBlog.Controllers
             return RedirectToAction("Login");
         }
 
-        public async Task<IActionResult> Profile(string username)
+
+        public async Task<IActionResult> Profile(int id)
         {
-            if (string.IsNullOrEmpty(username))
-            {
-                return NotFound();
-            }
-
-            var user = await _userRepository.Users
-                .Include(x => x.Articles)
-                .Include(x => x.Comments)
-                .FirstOrDefaultAsync(x => x.UserName == username);
-
+            var user = await _userRepository.GetUserById(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            // ProfileViewModel oluşturma
-            var model = new ProfileViewModel
+            var profileViewModel = new ProfileViewModel
             {
-                User = user,
                 UserId = user.UserId,
                 UserName = user.UserName,
                 Name = user.Name,
                 Email = user.Email,
-                Articles = user.Articles.ToList(),
-                Comments = user.Comments.ToList()
+                Image = user.Image
             };
 
-            return View(model);
+            return View(profileViewModel);
         }
+
+
 
 
 

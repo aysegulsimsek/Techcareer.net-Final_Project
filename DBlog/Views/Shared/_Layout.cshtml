@@ -105,7 +105,9 @@
             @if (User.Identity!.IsAuthenticated)
             {
                 <li class="nav-item">
-                    <a asp-controller="Users" asp-action="Profile" class="navlink align-items-center text-decoration-none">
+                    <a asp-controller="Users" asp-action="Profile"
+                        asp-route-id="@User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value"
+                        class="navlink align-items-center text-decoration-none">
                         <span class="material-symbols-outlined">account_circle</span>
                         <span> @User.Identity.Name</span>
 
