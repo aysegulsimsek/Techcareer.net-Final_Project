@@ -58,6 +58,14 @@ app.MapControllerRoute(
     pattern: "users/profile/{id?}",
     defaults: new { controller = "Users", action = "Profile" });
 
+app.MapControllerRoute(
+    name: "contact",
+    pattern: "Contact",
+    defaults: new { controller = "Contact", action = "Contact" }
+);
+
+
+
 
 
 app.MapRazorPages();

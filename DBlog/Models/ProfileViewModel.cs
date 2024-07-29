@@ -18,8 +18,8 @@ namespace DBlog.Models
         public List<User> Users { get; set; } = new();
         public List<Article> Articles { get; set; } = new();
 
-        // public List<Comment> Comments { get; set; } = new();
-        public IEnumerable<Comment>? Comments { get; set; }
+        public List<Comment> Comments { get; set; } = new();
+        // public IEnumerable<Comment>? Comments { get; set; }//bunu yazınca çalışmıyor
 
     }
 }

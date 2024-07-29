@@ -79,7 +79,7 @@
                         </a>
                     </li>
                     <li class="nav_li" id="contactIndexLi">
-                        <a class="nav__link" asp-controller="Article" asp-action="Contact">
+                        <a class="nav__link" asp-controller="Contact" asp-action="Contact">
                             <span class="icon align-items-center">
                                 <ion-icon name="call-outline"></ion-icon>
                             </span>
@@ -109,10 +109,18 @@
                         asp-route-id="@User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value"
                         class="navlink align-items-center text-decoration-none">
                         <span class="material-symbols-outlined">account_circle</span>
-                        <span> @User.Identity.Name</span>
+                        @functions {
+                        public string CapitalizeFirstLetter(string input)
+                        {
+                            if (string.IsNullOrEmpty(input))
+                                return input;
+                            return char.ToUpper(input[0]) + input.Substring(1);
+                        }
+                    }
 
-                    </a>
-                </li>
+                    <span class="mt-1">@CapitalizeFirstLetter(User.Identity.Name)</span>
+                </a>
+            </li>
                 <li class="nav-item">
                     <a class="navlink align-items-center gap-1 text-decoration-none" asp-controller="Users"
                         asp-action="Logout">

@@ -9,7 +9,7 @@ namespace DBlog.Entity
         public string? Content { get; set; }
         public DateTime CommentDate { get; set; }
         public int UserId { get; set; }
-        public string? UserName { get; set; }
+        // public string? UserName { get; set; }
         public User User { get; set; } = null!;
 
         public int ArticleId { get; set; }

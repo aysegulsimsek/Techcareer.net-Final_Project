@@ -40,9 +40,6 @@ namespace DBlog.Data.Concrete
             return SaveChangesAsync();
         }
 
-        public object GetUserByUserName(string userName)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

@@ -49,6 +49,7 @@ namespace DBlog.Controllers
                     {
                         UserName = model.UserName,
                         Email = model.Email,
+                        Name = model.Name,
                         Password = model.Password,
                         Image = "p1.jpg"
                     });

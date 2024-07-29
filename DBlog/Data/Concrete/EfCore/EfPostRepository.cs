@@ -15,27 +15,22 @@ namespace DBlog.Data.Concrete
             _context = context;
         }
 
-        // Articles özelliğini DbSet<Article> olarak implement edin
         public DbSet<Article> Articles => _context.Articles;
 
         public void CreatePost(Article article)
         {
             _context.Articles.Add(article);
-            _context.SaveChanges(); // Consider using SaveChangesAsync for async consistency
+            _context.SaveChanges();
         }
 
         public void EditPost(Article article)
         {
             _context.Articles.Update(article);
-            // You may consider saving changes here or at a higher level
-            // _context.SaveChanges();
         }
 
         public void Update(Article article)
         {
             _context.Articles.Update(article);
-            // Again, consider saving changes here or at a higher level
-            // _context.SaveChanges();
         }
 
         public async Task<Article?> FindAsync(int id)
