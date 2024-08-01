@@ -1,4 +1,4 @@
-@model DBlog.ViewModels.ArticleViewModel
+@model ArticleViewModel
 @{
     Layout = "_Layout";
 }
@@ -9,19 +9,19 @@
         }
 
         body {
-
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
             background: linear-gradient(to bottom right, #f0f8ff, #ffffff);
             background-image: radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
                 radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
-
             text-align: center;
-            min-height: 600px;
         }
 
         .container {
-            max-width: max-content;
             padding: 0;
         }
 
@@ -31,8 +31,7 @@
             border-radius: 8px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
             max-width: max-content;
-
-
+            margin: auto;
         }
 
         .blog_title {
@@ -103,61 +102,141 @@
             color: #666666;
             font-family: 'Open Sans', sans-serif;
             font-size: small;
+        }
 
+        .empty-content {
+            padding: 2rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .pagination a {
+            display: block;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .pagination a:hover {
+            background-color: #45a049;
+        }
+
+        .pagination a.active {
+            background-color: #333;
         }
     </style>
 }
+
 @if (Model.ErrorMessage != null)
 {
     <div class="alert alert-danger">
         @Model.ErrorMessage
     </div>
 }
-<div class="container">
-    <div class="container_bg mt-3 w-75 m-auto">
-        <div class="bg-white cont_hugh">
-            <div class="d-flex align-items-center justify-content-between main_header">
-                <h2 class=" blog_title">My Blog</h2>
-                <div class="d-flex justify-content-end align-items-center hero">
-                    <a class="btn btn-success" asp-action="Create" asp-controller="Article">Create New Article</a>
-                </div>
-            </div>
-            <hr class="hr">
-
-            <div class=" p-3 rounded-1 m-4 list-unstyled">
-                @foreach (var article in Model.Articles)
-                {
-                    <i class="d-flex justify-content-end mb-4 user-select-none">Published on:
-                        @article.PublishedDate.ToShortDateString()</i>
-                    <div class="mr-auto image-wrapper">
-                        @if (!string.IsNullOrEmpty(article.ImageFile))
-                        {
-                            <img style="user-select: none;" src="@article.ImageFile" alt="@article.Title" />
-                        }
+@if (Model.Articles != null && Model.Articles.Any())
+{
+    <div class="container">
+        <div class="container_bg mt-3 w-75 m-auto">
+            <div class="bg-white cont_hugh">
+                <div class="d-flex align-items-center justify-content-between main_header">
+                    <h2 class="blog_title">My Blog</h2>
+                    <div class="d-flex justify-content-end align-items-center hero">
+                        <a class="btn btn-success" asp-action="Create" asp-controller="Article">Create New Article</a>
                     </div>
+                </div>
+                <hr class="hr">
 
-                    <li class="">
-                        <div class="ml-auto">
-                            <h3 class="article_title">@article.Title</h3>
-                            <p class="article_content"> @Html.Raw(GetShortContent(article.Content))<a
-                                    class="text-decoration-none" href=" @Url.Action("Details", "Article", new
+                <ul class="p-3 rounded-1 m-4 list-unstyled" id="article-list">
+                    @foreach (var article in Model.Articles)
+                    {
+
+
+                        <li class="article-item">
+                            @if (!@article.IsActive)
+                            {
+                                <div class="d-flex justify-content-end align-items-center user-select-none">
+                                    <ion-icon name="refresh" class="mb-3"></ion-icon>
+                                    <p class="status-message">Onay Bekliyor</p>
+                                </div>
+                            }
+                            <i class="d-flex justify-content-end mb-4 user-select-none">Published on:
+                                @article.PublishedDate.ToShortDateString()</i>
+                            <div class="mr-auto image-wrapper">
+                                @if (!string.IsNullOrEmpty(article.ImageFile))
                                 {
-                                    id = article.Id
-                                })">devamını gör</a>
-                            </p>
+                                    <img style="user-select: none;" src="@article.ImageFile" alt="@article.Title" />
+                                }
+                            </div>
 
-                        </div>
-                    </li>
-                    <hr class="hr">
-                }
+                            <div class="ml-auto">
+                                <h3 class="article_title">@article.Title</h3>
+
+                                <p class="article_content">
+                                    @Html.Raw(GetShortContent(article.Content))
+
+                                    @if (article.IsActive)
+                                    {
+ <a class="text-decoration-none"
+                                        href="@Url.Action("Details", "Article", new { url = article.Url })">devamını gör</a>
+                                    }
+                                   
+                                </p>
+                            </div>
+                            <hr class="hr">
+                        </li>
+
+                    }
+                </ul>
+
+                <nav>
+                    <ul class="pagination" id="pagination">
+                    </ul>
+                </nav>
 
             </div>
         </div>
     </div>
-</div>
-<footer class="text-center footer mt-4 py-4 w-100">
-    <p class="mt-2 user-select-none">&copy; 2024 My Blog. All rights reserved.</p>
-</footer>
+}
+else
+{
+    <div class="container p-5 m-5 w-100">
+        <div class="container_bg mt-3 w-75 m-auto">
+            <div class="bg-white cont_hugh">
+                <div class="d-flex align-items-center justify-content-between main_header">
+                    <h2 class="blog_title m-0">My Blog</h2>
+                    <div class="d-flex justify-content-end align-items-center hero">
+                        <a class="btn btn-success" asp-action="Create" asp-controller="Article">Create New Article</a>
+                    </div>
+                </div>
+                <hr class="hr">
+                <div class="empty-content">
+                    <p>No articles available at the moment. Please check back later.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 @functions {
     private string GetShortContent(string? content, int maxLength = 1050)
     {
@@ -173,5 +252,63 @@
 
         return content.Substring(0, maxLength) + "...";
     }
+}
 
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const itemsPerPage = 3;
+            const articles = document.querySelectorAll(".article-item");
+            const totalItems = articles.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+
+            let currentPage = 1;
+
+            function showPage(page) {
+                // Tüm makaleleri gizle
+                articles.forEach((article, index) => {
+                    article.style.display = 'none';
+                });
+
+                const startIndex = (page - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+
+                for (let i = startIndex; i < endIndex && i < totalItems; i++) {
+                    articles[i].style.display = 'block';
+                }
+
+                updatePagination(page);
+            }
+
+            function updatePagination(page) {
+                pagination.innerHTML = '';
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const li = document.createElement('li');
+                    li.className = 'page-item';
+
+                    const a = document.createElement('a');
+                    a.className = 'page-link';
+                    a.href = '#';
+                    a.innerText = i;
+
+                    if (i === page) {
+                        a.classList.add('active');
+                    }
+
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentPage = i;
+                        showPage(currentPage);
+                    });
+
+                    li.appendChild(a);
+                    pagination.appendChild(li);
+                }
+            }
+
+            showPage(currentPage);
+        });
+    </script>
 }

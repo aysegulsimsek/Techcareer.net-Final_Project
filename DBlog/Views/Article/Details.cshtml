@@ -2,12 +2,23 @@
 
 @{
     ViewData["Title"] = "Article Details";
-     var isAuthor = User.Identity.Name == Model.User.UserName;
+
+    // Model'in null olup olmadığını kontrol edin
+    if (Model != null && Model.User != null)
+    {
+        var isAuthor = User.Identity.Name == Model.User.UserName;
+    }
+    else
+    {
+        // Model veya User null ise varsayılan bir değer atayın veya hata işleme ekleyin
+        var isAuthor = false;
+    }
 }
 
 
+@section Styles {
 <style>
-     body {
+    body {
         background: linear-gradient(to bottom right, #f0f8ff, #ffffff);
         background-image: radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
             radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
@@ -19,29 +30,29 @@
     }
 
     .container {
-        max-width: max-content;
         padding: 0;
     }
-     .cont_hugh {
+
+    .cont_hugh {
         padding: 2rem;
         background-color: #ffffff;
         border-radius: 8px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-
     }
-     .article_title {
+
+    .article_title {
         color: #4c4b4b;
         font-size: 2em;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         margin: 20px 0;
     }
+
     .image-wrapper {
         display: flex;
         justify-content: flex-end;
         align-items: center;
         width: 100%;
         padding: 0 2rem;
-
     }
 
     .image-wrapper img {
@@ -50,157 +61,176 @@
         object-fit: cover;
         border-radius: 2rem;
     }
-    .content_model{
+
+    .content_model {
         padding: 2rem;
     }
-    .comments_container{
+
+    .comments_container {
         padding: 2rem;
         background-color: #ffffff;
         border-radius: 8px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     }
-    .comment_img{
+
+    .comment_img {
         padding: 1rem;
     }
-     .comment_img img{border: 1px solid #4c4b4b;
+
+    .comment_img img {
+        border: 1px solid #4c4b4b;
         border-radius: 100%;
-        background-color: #4c4b4b;}
-    .user_comment_section{
+        background-color: #4c4b4b;
+    }
+
+    .user_comment_section {
         display: flex;
         flex-direction: column;
         text-align: justify;
-        padding:0 1rem;
-
+        padding: 0 1rem;
     }
-     footer.footer {
-            background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
-            color: #666666;
-            font-family: 'Open Sans', sans-serif;
-            font-size: small;
 
-        }
+    footer.footer {
+        background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+        color: #666666;
+        font-family: 'Open Sans', sans-serif;
+        font-size: small;
+    }
 </style>
+}
+
 <div class="container">
     <div class="cont_hugh mt-3 w-75 m-auto">
-    <h1 class="article_title">@Model.Title</h1>
-    <div class="d-flex gap-2 mb-3 justify-content-end">
-
-        @if (User.IsInRole("admin"))
+         @if (!@Model.IsActive)
         {
-            <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning">Edit</a>
-            <form method="post" asp-action="Delete" asp-route-id="@Model.Id"
-                onsubmit="return confirm('Are you sure you want to delete this article?');">
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
+            <div class="d-flex justify-content-end align-items-center user-select-none"> 
+                <ion-icon name="refresh" class="mb-3"></ion-icon>
+                <p class="status-message">Onay Bekliyor</p>
+                </div>
+           
         }
-
+        <h1 class="article_title">@Model.Title</h1>
+        <div class="d-flex gap-2 mb-3 justify-content-end">
+            @if (User.IsInRole("admin"))
+            {
+                <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning">Edit</a>
+                <form method="post" asp-action="Delete" asp-route-id="@Model.Id"
+                    onsubmit="return confirm('Are you sure you want to delete this article?');">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            }
+        </div>
+        <i class="d-flex justify-content-end mb-4 user-select-none">Published on:@Model.PublishedDate.ToString("MMMM dd, yyyy")</i>
+        <div class="mr-auto image-wrapper">
+            @if (!string.IsNullOrEmpty(Model.ImageFile))
+            {
+                <div class="mb-3">
+                    <img src="~/img/@Model.ImageFile" class="img-fluid rounded" alt="">
+                </div>
+            }
+        </div>
+        <div class="content_model">
+            <p style="text-align: justify; line-height: 1.75rem;">@Html.Raw(@Model.Content)</p>
+        </div>
+        <div class="tags">
+            @foreach (var tag in Model.Tags)
+            {
+                <a href="/article/tag/@tag.Url" class="badge bg-@tag.Color bg-opacity-5 text-white mb-2 fw-bold">@tag.Text</a>
+            }
+        </div>
     </div>
-    <i class="d-flex justify-content-end mb-4 user-select-none">Published on:@Model.PublishedDate.ToString("MMMM dd, yyyy")</i>
-<div class="mr-auto image-wrapper">
-    @if (!string.IsNullOrEmpty(Model.ImageFile))
-    {
-        <div class="mb-3">
-            <img src="@Model.ImageFile" alt="@Model.Title" style="user-select: none;" />
+    <div class="comments_container mt-3 w-75 m-auto">
+        <h3>Comments</h3>   
+        <div class="card-header">
+            <h4><span id="commentCount">@Model.Comments.Count()</span> adet yorum var.</h4>
         </div>
-    }
-</div>
-   <div class="content_model"> <p style="text-align: justify; line-height: 1.75rem;">@Model.Content</p></div>
-
-</div>
-<div class="comments_container mt-3 w-75 m-auto">
-    <h3>Comments</h3>
-
-    <form id="commentForm" method="post" asp-action="AddComment">
-        <input type="hidden" name="articleId" value="@Model.Id" />
-        <div class="mb-3">
-        
-            @if (ViewData["ErrorMessage"] != null)
-            {
-                <div class="alert alert-danger mt-2" id="errorMessage">
-                    @ViewData["ErrorMessage"]
-                </div>
-            }
-        </div>
-        @if (!isAuthor)
-{
-    <form id="commentForm" method="post" asp-action="AddComment">
-        <input type="hidden" name="articleId" value="@Model.Id" />
-        <div class="mb-3">
-            <textarea name="content" class="form-control" rows="3" placeholder="Add a comment..."
-                id="commentContent"></textarea>
-            @if (ViewData["ErrorMessage"] != null)
-            {
-                <div class="alert alert-danger mt-2" id="errorMessage">
-                    @ViewData["ErrorMessage"]
-                </div>
-            }
-        </div>
-        <button type="submit" class="btn btn-primary">Add Comment</button>
-    </form>
-     <div id="emojiPicker" style="display:none;"></div>
-}
-else
-{
-    <p class="">You cannot comment on your own article.</p>
-}
-
-    </form>
-
-    @if (Model.Comments != null && Model.Comments.Any())
-    {
-        @foreach (var comment in Model.Comments.OrderByDescending(c => c.CommentDate))
+            <hr class="my-4">
+             <div id="comment">
+        @foreach (var comment in Model.Comments)
         {
-            <div class="mt-3 mb-3 border p-3 rounded  justify-content-between">
+            <div class="mt-3 mb-3 border p-3 rounded justify-content-between">
                 <div class="d-flex comment_img">
-                     @if (!string.IsNullOrEmpty(comment.User.Image))
-        {
-            <img class="ml-auto" src="~/img/@comment.User.Image" alt="@comment.User.UserName" style="width: 100px; height: 100px; object-fit: cover;" />
-        }               <div class="user_comment_section">
-                    <strong class="ml-auto"> @(comment.User.Name != null ? comment.User.Name : "Unknown")</strong>
-                    <div>
-                        <p>@comment.Content</p>
-                         <small>@comment.CommentDate.ToString("g")</small>
-                     </div>
-                     </div>
+                    
+                        <img class="ml-auto" src="~/img/@comment.User.Image" alt="@comment.User.UserName" style="width: 100px; height: 100px; object-fit: cover;" />
+                   
+                    <div class="user_comment_section">
+                        <strong class="ml-auto">@comment.User.UserName</strong>
+                        <div>
+                            <p>@comment.Content</p>
+                            <small>@comment.CommentDate.ToString("g")</small>
+                        </div>
+                    </div>
                 </div>
-               
-
             </div>
         }
-    }
-    else
-    {
-        <p class="mt-3">No comments yet. Be the first to comment!</p>
-    }
+        </div>
+ @if(User.Identity!.IsAuthenticated){
+            <div>
+             <form id="commentForm" method="post" action="/article/AddComment">
+                <input type="hidden" id="ArticleId" name="ArticleId" value="@Model.Id">
+                <div class="mb-3">
+                <label for="Content" class="form-label"></label>
+                <textarea name="Content" id="Content" rows="3" class="form-control"></textarea> 
+                </div>
+                <div class="mb-3">
+                <button id="btnYorumKayit" type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+ }
+ else{
+     <p>Yorum yapabilmek için giriş yapınız. <a href="/users/login">Login</a></p>
+ }   
+    </div>
 </div>
-</div>
-<footer class="text-center footer mt-4 py-4 w-100">
-        <p class="mt-2 user-select-none">&copy; 2024 My Blog. All rights reserved.</p>
-    </footer>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var errorMessage = document.getElementById('errorMessage');
-            if (errorMessage) {
-                alert(errorMessage.textContent);
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script type="text/javascript">
+   $(document).ready(function() {
+    $("#btnYorumKayit").click(function() {
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AddComment")',
+            dataType: 'json',
+            data: {
+                ArticleId: $('#ArticleId').val(),
+                UserName: $('#UserName').val(),
+                Content: $('#Content').val(),
+            },
+            success: function(yorum) {
+
+                var date = new Date(yorum.CommentDate);
+                $("#comment").append(`
+                            <div class="mt-3 mb-3 border p-3 rounded justify-content-between">
+                <div class="d-flex comment_img">
+                    
+                        <img class="ml-auto" src="~/img/${yorum.avatar}" alt="" style="width: 100px; height: 100px; object-fit: cover;" />
+                   
+                    <div class="user_comment_section">
+                        <strong class="ml-auto">${yorum.UserName}</strong>
+                        <div>
+                            <p>${yorum.Content}</p>
+                            <small>${date.toLocaleDateString()}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>                     
+                        `);
+
+                $("#UserName").val('');
+                $("#Content").val('');
+
+                var adet = parseInt($("#commentCount").text());
+                $("#commentCount").text(adet + 1);
             }
-
-            var form = document.getElementById('commentForm');
-            var commentContent = document.getElementById('commentContent');
-
-            form.addEventListener('submit', function (event) {
-                var content = commentContent.value.trim();
-                if (content === '') {
-                    alert('Comment content cannot be empty.');
-                    event.preventDefault();
-                } else if (content.length < 15 || content.length > 100) {
-                    alert('Comment must be between 15 and 100 characters.');
-                    event.preventDefault();
-                }
-            });
         });
-    </script>
-   
-     <script src="https://unpkg.com/emoji-mart/dist/emoji-mart.js"></script>
+           return false;
+    });
+});
+
+</script>
+
 }
+

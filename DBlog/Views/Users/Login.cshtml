@@ -21,8 +21,10 @@
             <header>Login</header>
             <form asp-controller="Users" asp-action="Login" method="post">
                 <div asp-validation-summary="ModelOnly"></div>
-                <label asp-for="UserName" hidden></label>
-                <input asp-for="UserName" class="text" placeholder="Username">
+
+                <label asp-for="Email" hidden></label>
+                <input asp-for="Email" class="text">
+
                 <label asp-for="Password" hidden></label>
                 <input asp-for="Password" class="text" placeholder="Password">
                 <div class="checkbox">

@@ -1,36 +1,34 @@
-@model IEnumerable<DBlog.Entity.Article>
+@model ArticleViewModel
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] - My Blog</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+@section Styles {
     <style>
-        .container {
-            max-width: max-content;
+        .container-fluid {
             padding: 0;
-        }
-
-        .cont_lg {
-            width: 90%;
-            margin: auto;
-            border-radius: 10px;
-            padding: 20px 20px;
-            height: 100%;
-            background-color: #f8f9fa;
-
-        }
-
-        .cont_lg_top {
+            max-width: 100%;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
         }
 
-        .h1_col {
-            color: #343a40;
+        .row {
+            display: flex;
+            width: 100%;
+            margin: 0;
+        }
+
+        .col-lg-8,
+        .col-lg-4 {
+            padding: 15px;
+        }
+
+        .bg-white {
+            background-color: #fff;
+        }
+        .cont_left{box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+         .cont_right{box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .h-100 {
+            height: 100%;
         }
 
         .card {
@@ -42,17 +40,11 @@
             padding: 0 1rem;
             background-color: #fff;
             border: none;
-
-        }
-
-        .card_top {
-            padding: 1rem 2rem;
-            border-radius: 1rem;
-        @*border:1pxsolid#fff;*@background-color: #f8f9fa;
+            width: 100%;
         }
 
         .card-img-top {
-        @*width:150px;*@height: 15rem;
+            height: 15rem;
             object-fit: cover;
         }
 
@@ -65,7 +57,6 @@
             font-size: 2rem;
             margin-bottom: 0.5rem;
             color: #4c4b4b;
-            font-size: 2em;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
             margin: 20px 0;
         }
@@ -77,67 +68,25 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .btn_top {
-            display: flex;
-            justify-content: end;
-
-        }
-
-        .btn {
-            background-color: rgb(204, 202, 197);
-            font-weight: 500;
-            color: #343a40;
-        }
-
-        .btn-gold {
-            background-color: rgb(210, 208, 199);
-            border-color: rgb(207, 206, 205);
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            background-color: #007bff;
             color: #fff;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
         }
 
-        .btn-gold:hover {
-            color: #fff;
-            background-color: rgb(196, 197, 197);
-
+        .badge:hover {
+            background-color: #0056b3;
         }
 
-        .card-shadow-yellow {
-            box-shadow: 0 4px 8px rgba(204, 204, 203, 0.5);
-        }
-
-        .tags_cont {
-            background-color: #fff;
-            height: 300px;
-        @*border:1pxsolid#b8baba;*@border-radius: 50px;
-            text-align: center;
-            padding: 20px;
-
-        }
-
-        .tags_list {
-            margin-top: 20px;
+        .tags {
             display: flex;
-            gap: 20px;
-            flex-direction: column;
-        }
-
-        .tags_list li {
-            background-color: rgb(0, 162, 255);
-            border-radius: 20px;
-            text-align: left;
-            cursor: pointer;
-            transition: all .3s ease-in;
-
-        }
-
-        .tags_list li a {
-            padding: 5px 10px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-        }
-
-        .tags_list li:hover {
-            background-color: rgb(82, 184, 243);
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
         }
 
         body {
@@ -147,7 +96,6 @@
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
             color: #333;
-            text-align: center;
             min-height: 400px;
         }
 
@@ -156,112 +104,144 @@
             color: #666666;
             font-family: 'Open Sans', sans-serif;
             font-size: small;
-
         }
     </style>
-</head>
-@* user-select-none *@
+}
 
-<body class="">
-    <div class="container ">
-        <div class="mt-4 cont_lg mr-0">
-            <div class="d-flex justify-between align-items-center">
-                @* <h1 class="text-center mx-auto h1_col">All Articles</h1> *@
-            </div>
-            <div class="d-flex m-0 p-0">
-                <div class="cont_lg_top m-0 p-0">
-                    @if (TempData["SuccessMessage"] != null)
-                    {
-                        <div class="alert alert-success" role="alert">
-                            @TempData["SuccessMessage"]
-                        </div>
-                    }
-
-                    @if (Model == null || !Model.Any())
-                    {
-                        <p>No articles available.</p>
-                    }
-                    else
-                    {
-                        <div class="row col-md-11">
-                            @foreach (var article in Model)
-                            {
-                                <div class="card_top mt-4">
-                                    <div class="card card-shadow-yellow">
-                                        <h2 class="card-title text-center mt-2">@article.Title</h2>
-                                        <div class="card_img mt-2">
-                                            @if (!string.IsNullOrEmpty(article.ImageFile))
-                                            {
-                                                <img src="@article.ImageFile" class="card-img-top rounded-1" alt="@article.Title">
-                                            }
-                                            else
-                                            {
-                                                <img src="/images/default-image.jpg" class="card-img-top" alt="Default Image">
-                                            }
-                                        </div>
-                                        <div class="card-body">
-
-                                            <p class="card-text">
-                                                @Html.Raw(GetShortContent(article.Content))
-                                            </p>
-                                            <div class="btn_top">
-                                                <a href="@Url.Action("Details", "Article", new { id = article.Id })"
-                                                    class="btn btn-gold">Read More</a>
-                                            </div>
-                                        </div>
-                                    </div>
+<div class="container-fluid cont_left">
+    <div class="row mt-4 flex-container">
+        <div class="col-lg-8 col-md-8 col-sm-12">
+            <div class="bg-white p-4 border mt-4  rounded">
+                <h1 class="h4 mb-4 text-center">Popüler Makaleler</h1>
+                @foreach (var article in Model.Articles)
+                {
+                    <div class="article-item">
+                        <hr />
+                        <div class="card bg-transparent border-0 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="col-9">
+                                    <h5>
+                                        <a href="/article/details/@article.Url" class="w-100">@article.Title</a>
+                                    </h5>
                                 </div>
-                            }
+                                @if (article.IsActive)
+                                {
+                                    <div class="d-flex justify-content-end align-items-center user-select-none">
+                                        <ion-icon name="checkmark-circle-outline" class="mb-3"></ion-icon>
+                                        <p class="status-message">Onaylandı</p>
+                                    </div>
+                                }
+                            </div>
+                            <div class="tags mb-2">
+                                @foreach (var tag in article.Tags)
+                                {
+                                    <a href="/article/tag/@tag.Url" class="badge bg-@tag.Color bg-opacity-5 text-white mb-2 fw-bold">
+                                        @tag.Text
+                                    </a>
+                                }
+                            </div>
+                            <div class="d-flex">
+                                <div class="col-4">
+                                    <img src="~/img/@article.ImageFile" class="img-fluid rounded" alt="Article Image">
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        @Html.Raw(GetShortContent(article.Content))
+                                        <a href="/article/details/@article.Url" class="">devamını oku</a>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    }
-                </div>
-                <div class="col-md-3">
-                    <div class="tags_cont">
-                        <h4> Tags</h4>
-                        <ul class="list-unstyled tags_list">
-                            <li><i><a href="#" class=" text-white text-decoration-none w-25">#Ai </a></i></li>
-                            <li><i><a href="#" class=" text-white text-decoration-none w-25">#Ai </a></i></li>
-                            <li><i><a href="#" class=" text-white text-decoration-none w-25">#Ai </a></i></li>
-                            <li><i><a href="#" class=" text-white text-decoration-none w-25">#Ai </a></i></li>
-                            <li><i><a href="#" class=" text-white text-decoration-none w-25">#Ai </a></i></li>
-                        </ul>
                     </div>
-                    <div class="tags_cont mt-3">
-                        <h4>Writers</h4>
-                        <ul class="list-unstyled tags_list">
-                            <li><i><a href="#" class=" text-white text-decoration-none w-25">#Ai </a></i></li>
-                            <li><i><a href="#" class=" text-white text-decoration-none w-25">#Ai </a></i></li>
-                            <li><i><a href="#" class=" text-white text-decoration-none w-25">#Ai </a></i></li>
-                            <li><i><a href="#" class=" text-white text-decoration-none w-25">#Ai </a></i></li>
-                            <li><i><a href="#" class=" text-white text-decoration-none w-25">#Ai </a></i></li>
-                        </ul>
-                    </div>
-                </div>
+                }
+                <nav class="d-flex justify-content-center">
+                    <ul class="pagination" id="pagination">
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 mb-1 rounded">
+            <div class="bg-white p-4 border mt-4 rounded">
+                <vc:tags-menu></vc:tags-menu>
+                <vc:new-posts></vc:new-posts>
             </div>
         </div>
     </div>
-    <footer class="text-center footer mt-4 py-4 w-100">
-        <p class="mt-2 user-select-none">&copy; 2024 My Blog. All rights reserved.</p>
-    </footer>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
 
-</html>
-
-@functions {
-    private string GetShortContent(string? content, int maxLength = 150)
-    {
-        if (string.IsNullOrEmpty(content))
+@section Scripts {
+    <script>
+        @functions {
+        private string GetShortContent(string? content, int maxLength = 150)
         {
-            return string.Empty;
-        }
+            if (string.IsNullOrEmpty(content))
+            {
+                return string.Empty;
+            }
 
-        if (content.Length <= maxLength)
-        {
-            return content;
-        }
+            if (content.Length <= maxLength)
+            {
+                return content;
+            }
 
-        return content.Substring(0, maxLength) + "...";
+            return content.Substring(0, maxLength) + "...";
+        }
     }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const itemsPerPage = 3;
+            const articles = document.querySelectorAll(".article-item");
+            const totalItems = articles.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+
+            let currentPage = 1;
+
+            function showPage(page) {
+                articles.forEach((article, index) => {
+                    article.style.display = 'none';
+                });
+
+                const startIndex = (page - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+
+                for (let i = startIndex; i < endIndex && i < totalItems; i++) {
+                    articles[i].style.display = 'block';
+                }
+
+                updatePagination(page);
+            }
+
+            function updatePagination(page) {
+                pagination.innerHTML = '';
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const li = document.createElement('li');
+                    li.className = 'page-item';
+
+                    const a = document.createElement('a');
+                    a.className = 'page-link';
+                    a.href = '#';
+                    a.innerText = i;
+
+                    if (i === page) {
+                        a.classList.add('active');
+                    }
+
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentPage = i;
+                        showPage(currentPage);
+                    });
+
+                    li.appendChild(a);
+                    pagination.appendChild(li);
+                }
+            }
+
+            showPage(currentPage);
+        });
+    </script>
 }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240726151951_InitialCreate")]
+    [Migration("20240801092940_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -19,6 +19,21 @@ namespace DBlog.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.7");
+
+            modelBuilder.Entity("ArticleTag", b =>
+                {
+                    b.Property<int>("ArticlesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TagsTagId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ArticlesId", "TagsTagId");
+
+                    b.HasIndex("TagsTagId");
+
+                    b.ToTable("ArticleTag");
+                });
 
             modelBuilder.Entity("DBlog.Entity.Article", b =>
                 {
@@ -31,11 +46,13 @@ namespace DBlog.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(5000)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ImageFile")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("PublishedDate")
                         .HasColumnType("TEXT");
@@ -43,6 +60,9 @@ namespace DBlog.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
@@ -84,6 +104,26 @@ namespace DBlog.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("DBlog.Entity.Tag", b =>
+                {
+                    b.Property<int>("TagId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Color")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("TagId");
+
+                    b.ToTable("Tags");
+                });
+
             modelBuilder.Entity("DBlog.Entity.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -109,6 +149,21 @@ namespace DBlog.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ArticleTag", b =>
+                {
+                    b.HasOne("DBlog.Entity.Article", null)
+                        .WithMany()
+                        .HasForeignKey("ArticlesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DBlog.Entity.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBlog.Entity.Article", b =>

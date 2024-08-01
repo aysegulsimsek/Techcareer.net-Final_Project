@@ -8,8 +8,9 @@ namespace DBlog.Models
     {
 
         [Required]
-        [Display(Name = "Username")]
-        public string? UserName { get; set; }
+        [EmailAddress]
+        [Display(Name = "Eposta")]
+        public string? Email { get; set; }
 
         [Required]
         [StringLength(10, ErrorMessage = "{0} alanı en az {2} an çok {1} karakter uzunluğunda olmalıdır.", MinimumLength = 5)]

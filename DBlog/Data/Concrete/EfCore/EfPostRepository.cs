@@ -25,17 +25,73 @@ namespace DBlog.Data.Concrete
 
         public void EditPost(Article article)
         {
-            _context.Articles.Update(article);
+            var entity = _context.Articles.FirstOrDefault(i => i.Id == article.Id);
+            if (entity != null)
+            {
+                entity.Title = article.Title;
+                entity.Content = article.Content;
+                entity.Url = article.Url;
+                entity.IsActive = article.IsActive;
+
+                _context.SaveChanges();
+            }
+        }
+
+        public void EditPost(Article article, int[] tagIds)
+        {
+            var entity = _context.Articles.Include(i => i.Tags).FirstOrDefault(i => i.Id == article.Id);
+            if (entity != null)
+            {
+                entity.Title = article.Title;
+                entity.Content = article.Content;
+                entity.Url = article.Url;
+                entity.IsActive = article.IsActive;
+
+                // Mevcut etiketlerle birleştir
+                var currentTagIds = entity.Tags.Select(t => t.TagId).ToList();
+                var newTags = _context.Tags.Where(tag => tagIds.Contains(tag.TagId) && !currentTagIds.Contains(tag.TagId)).ToList();
+
+                foreach (var tag in newTags)
+                {
+                    entity.Tags.Add(tag);
+                }
+
+                _context.SaveChanges();
+            }
         }
 
         public void Update(Article article)
         {
-            _context.Articles.Update(article);
+            var entity = _context.Articles.Include(a => a.Tags).FirstOrDefault(i => i.Id == article.Id);
+            if (entity != null)
+            {
+                entity.Title = article.Title;
+                entity.Content = article.Content;
+                entity.Url = article.Url;
+                entity.IsActive = article.IsActive;
+                entity.ImageFile = article.ImageFile;
+
+                // Mevcut etiketlerle birleştir
+                var currentTagIds = entity.Tags.Select(t => t.TagId).ToList();
+                var newTags = article.Tags.Where(tag => !currentTagIds.Contains(tag.TagId)).ToList();
+
+                foreach (var tag in newTags)
+                {
+                    entity.Tags.Add(tag);
+                }
+
+                _context.Articles.Update(entity);
+                _context.SaveChanges();
+            }
         }
 
-        public async Task<Article?> FindAsync(int id)
+        public async Task<Article?> FindAsync(int? id)
         {
-            return await _context.Articles.FindAsync(id);
+            if (id.HasValue)
+            {
+                return await _context.Articles.Include(a => a.Tags).FirstOrDefaultAsync(a => a.Id == id.Value);
+            }
+            return null;
         }
 
         public async Task<int> SaveChangesAsync()

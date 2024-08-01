@@ -17,10 +17,10 @@ namespace DBlog.Data.Concrete
 
         public IQueryable<Comment> Comments => _context.Comments.AsQueryable();
 
-        public void CreateComment(Comment comment)
-        {
-            _context.Comments.Add(comment);
-        }
+        // public void CreateComment(Comment comment)
+        // {
+        //     _context.Comments.Add(comment);
+        // }
         public void Update(Comment comment)
         {
             _context.Entry(comment).State = EntityState.Modified;
@@ -54,5 +54,21 @@ namespace DBlog.Data.Concrete
                 .Where(c => c.UserId == userId)
                 .ToListAsync();
         }
+        public void CreateComment(Comment entity)
+        {
+            try
+            {
+                // Entity Framework veya başka bir ORM ile veritabanına kaydet
+                _context.Comments.Add(entity);
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // // Hata mesajını loglayın
+                // _logger.LogError(ex, "Yorum kaydedilemedi: {@entity}", entity);
+                throw;
+            }
+        }
+
     }
 }

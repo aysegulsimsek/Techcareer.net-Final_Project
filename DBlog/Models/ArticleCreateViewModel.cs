@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using DBlog.Entity;
+using Microsoft.AspNetCore.Http;
 
 namespace DBlog.Models
 {
@@ -7,14 +9,25 @@ namespace DBlog.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Başlık gereklidir")]
-        [StringLength(100, ErrorMessage = "Başlık 100 karakterden uzun olmamalıdır")]
+        [Display(Name = "Başlık")]
         public string Title { get; set; } = null!;
 
         [Required(ErrorMessage = "İçerik gereklidir")]
-        [StringLength(5000, ErrorMessage = "İçerik 5000 karakterden uzun olmamalıdır")]
+        [Display(Name = "İçerik")]
         public string Content { get; set; } = null!;
 
+        [Required]
+        [Display(Name = "Url")]
+        public string? Url { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public string? ExistingImageFile { get; set; } // Mevcut görsel
+
         [Display(Name = "Makale Resmi")]
-        public IFormFile? ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; } // Yeni yüklenen görsel
+
+        public List<Tag> Tags { get; set; } = new();
+
     }
 }

@@ -1,0 +1,44 @@
+@model List<Article>
+
+<div class="card mt-4 border bg-light">
+    <div class="card-header py-0 bg-light">
+        <h5 class="card-title ">Yeni Eklenenler</h5>
+    </div>
+    <div class="card-body ">
+        @foreach (var post in Model)
+        {
+            @if (post.IsActive)
+            {
+                <div class="mb-3">
+                    <h6 class="mb-0">
+                        <a href="/article/details/@post.Url">
+                            @post.Title
+                        </a>
+                    </h6>
+                </div>
+            }
+        }
+    </div>
+
+    @if (User.IsInRole("admin"))
+    {
+        <div class="card-header">
+            <h5 class="card-title">Onay Bekleyenler</h5>
+        </div>
+        <div class="card-body">
+            @foreach (var post in Model)
+            {
+                @if (!post.IsActive)
+                {
+                    <div class="mb-3">
+                        <h6 class="mb-0">
+                            <a href="/article/details/@post.Url">
+                                @post.Title
+                            </a>
+                        </h6>
+                    </div>
+                }
+            }
+        </div>
+    }
+</div>

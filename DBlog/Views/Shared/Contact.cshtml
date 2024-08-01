@@ -3,34 +3,74 @@
 @{
     ViewData["Title"] = "Contact";
 }
+<style>
+    body {
+        background: linear-gradient(to bottom right, #f0f8ff, #ffffff);
+        background-image: radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+            radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+        background-size: 20px 20px;
+        background-position: 0 0, 10px 10px;
+        user-select: none;
+        min-height: 400px;
+    }
 
-<h2>Contact</h2>
+    input,
+    textarea {
+        outline: none;
+        border: none;
+    }
 
-@if (ViewBag.Message != null)
-{
-    <div class="alert alert-success">@ViewBag.Message</div>
-}
+    .container_hugh {
+        border: 1px solid #f0f8ff;
+        padding: 2rem;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        margin: 2rem auto;
 
-<form asp-action="Contact" method="post">
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Subject"></label>
-        <input asp-for="Subject" class="form-control" />
-        <span asp-validation-for="Subject" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Message"></label>
-        <textarea asp-for="Message" class="form-control"></textarea>
-        <span asp-validation-for="Message" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Send</button>
-</form>
+    }
+
+    .form_contact {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .form_contact button {
+        width: 6rem;
+        background-color: lightslategray;
+        border: none;
+    }
+</style>
+<div class="container_hugh">
+    <h2 class="mb-4" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);"> Contact With Us !</h2>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-success">@ViewBag.Message</div>
+    }
+
+    <form asp-action="Contact" method="post" class="form_contact">
+        <div class="form-group">
+            <label asp-for="Name" hidden></label>
+            <input asp-for="Name" class="form-control" placeholder="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email" hidden></label>
+            <input asp-for="Email" class="form-control" placeholder="Email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Subject" hidden></label>
+            <input asp-for="Subject" class="form-control" placeholder="Subject" />
+            <span asp-validation-for="Subject" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Message" hidden></label>
+            <textarea asp-for="Message" class="form-control" placeholder="Message"></textarea>
+            <span asp-validation-for="Message" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+</div>

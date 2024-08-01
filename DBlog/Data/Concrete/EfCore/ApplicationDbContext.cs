@@ -13,6 +13,7 @@ namespace DBlog.Data
         public DbSet<Article> Articles => Set<Article>();
         public DbSet<Comment> Comments => Set<Comment>();
         public DbSet<User> Users => Set<User>();
+        public DbSet<Tag> Tags => Set<Tag>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

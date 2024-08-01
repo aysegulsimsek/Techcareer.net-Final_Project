@@ -15,7 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("database")));
 
 builder.Services.AddScoped<IPostRepository, EfPostRepository>();
-// builder.Services.AddScoped<ITagRepository, EfTagRepository>();
+builder.Services.AddScoped<ITagRepository, EfTagRepository>();
 builder.Services.AddScoped<ICommentRepository, EfCommentRepository>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
 
@@ -44,12 +44,17 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "article_details",
-    pattern: "article/details/{articleId}",
+    pattern: "article/details/{url}",
     defaults: new { controller = "Article", action = "Details" });
 app.MapControllerRoute(
     name: "editArticle",
     pattern: "article/edit/{id}",
     defaults: new { controller = "Article", action = "Edit" });
+app.MapControllerRoute(
+name: "post_by_tag",
+pattern: "article/tag/{tag}",
+defaults: new { controller = "Article", action = "Index" });
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Article}/{action=Home}/{id?}");

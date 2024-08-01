@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
-using DBlog.Models;
 using Microsoft.AspNetCore.Authorization;
 using DBlog.Data.Abstract;
 using DBlog.Data;
 using DBlog.Entity;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using DBlog.ViewModels;
+using DBlog.Models;
 using System.Text.Json;
+using static System.Net.Mime.MediaTypeNames;
 namespace DBlog.Controllers
 {
     public class ArticleController : Controller
@@ -17,16 +17,22 @@ namespace DBlog.Controllers
         private readonly IPostRepository _postRepository;
         private readonly IUserRepository _userRepository;
 
-        public ArticleController(ICommentRepository commentRepository, IPostRepository postRepository, IUserRepository userRepository)
+        private ITagRepository _tagRepository;
+        private readonly ILogger<ArticleController> _logger;
+
+        public ArticleController(ILogger<ArticleController> logger, ICommentRepository commentRepository, IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository)
         {
             _commentRepository = commentRepository;
             _postRepository = postRepository;
             _userRepository = userRepository;
+            _tagRepository = tagRepository;
+            _logger = logger;
         }
 
         // Home
         public IActionResult Home()
         {
+            var claims = User.Claims;
             return View();
         }
 
@@ -53,77 +59,144 @@ namespace DBlog.Controllers
 
 
         // Index
-        public async Task<IActionResult> Index()
+        [Authorize]
+
+        public async Task<IActionResult> Index(string tag)
         {
-            var articles = await _postRepository.Articles
+            IQueryable<Article> posts = _postRepository.Articles
+                .Include(a => a.Tags)
                 .Include(a => a.Comments)
-                .ToListAsync();
+                .Where(i => i.IsActive);
 
-            return View(articles);
+            if (!string.IsNullOrEmpty(tag))
+            {
+                posts = posts.Where(x => x.Tags.Any(t => t.Url == tag));
+            }
+
+            var viewModel = new ArticleViewModel
+            {
+                Articles = await posts.ToListAsync(),
+                Tags = await _tagRepository.Tags.ToListAsync()
+            };
+
+            return View(viewModel);
         }
 
-        public async Task<IActionResult> Details(int articleId)
+
+
+
+        [Authorize]
+
+        public async Task<IActionResult> Details(string url)
         {
+            return View(await _postRepository.Articles.Include(x => x.User).Include(x => x.Tags).Include(x => x.Comments).ThenInclude(x => x.User).FirstOrDefaultAsync(p => p.Url == url));
+        }
 
 
-            var article = await _postRepository.Articles
-                .Include(x => x.User)
-                .Include(x => x.Comments)
-                .ThenInclude(c => c.User)
-                .FirstOrDefaultAsync(p => p.Id == articleId);
+        [Authorize]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var article = _postRepository.Articles.Include(x => x.Tags).FirstOrDefault(i => i.Id == id);
 
             if (article == null)
             {
-                return NotFound("Article not found.");
+                return NotFound();
             }
 
-            return View(article);
+            ViewBag.Tags = _tagRepository.Tags.ToList();
+            return View(
+                new ArticleCreateViewModel
+                {
+                    Id = article.Id,
+                    Title = article.Title,
+                    Content = article.Content,
+                    Url = article.Url,
+                    IsActive = article.IsActive,
+                    ExistingImageFile = article.ImageFile
+
+                }
+
+                );
         }
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            if (id <= 0)
-            {
-                return BadRequest("Invalid article ID.");
-            }
-
-            var article = await _postRepository.Articles
-                .FirstOrDefaultAsync(a => a.Id == id);
-
-            if (article == null)
-            {
-                return NotFound("Article not found.");
-            }
-
-            return View(article);
-        }
+        [Authorize]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Article model)
+        public async Task<IActionResult> Edit(ArticleCreateViewModel model, int[] tagIds)
         {
-            if (model == null)
+            if (ModelState.IsValid)
             {
-                return BadRequest("Invalid model data.");
+                var existingArticle = await _postRepository.FindAsync(model.Id);
+
+                if (existingArticle == null)
+                {
+                    return NotFound();
+                }
+
+                // Makale bilgilerini güncelle
+                existingArticle.Title = model.Title;
+                existingArticle.Content = model.Content;
+                existingArticle.Url = model.Url;
+
+                if (User.FindFirstValue(ClaimTypes.Role) == "admin")
+                {
+                    existingArticle.IsActive = model.IsActive;
+                }
+
+                // Görsel dosyasını kontrol et ve güncelle
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
+                {
+                    // Eski görseli sil (varsa)
+                    if (!string.IsNullOrEmpty(existingArticle.ImageFile))
+                    {
+                        var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", existingArticle.ImageFile);
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    // Yeni görseli kaydet
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img");
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(model.ImageFile.FileName);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.ImageFile.CopyToAsync(fileStream);
+                    }
+
+                    existingArticle.ImageFile = uniqueFileName;
+                }
+
+                // Yeni etiketleri ekle
+                var currentTagIds = existingArticle.Tags.Select(t => t.TagId).ToList();
+                var newTags = _tagRepository.Tags.Where(tag => tagIds.Contains(tag.TagId) && !currentTagIds.Contains(tag.TagId)).ToList();
+
+                foreach (var tag in newTags)
+                {
+                    existingArticle.Tags.Add(tag);
+                }
+
+                // Veritabanında güncellemeleri kaydet
+                _postRepository.Update(existingArticle);
+
+                return RedirectToAction("Index");
             }
 
-
-            var article = await _postRepository.Articles
-                .FirstOrDefaultAsync(a => a.Id == model.Id);
-
-            if (article == null)
-            {
-                return NotFound("Article not found.");
-            }
-
-
-            article.Title = model.Title;
-            article.Content = model.Content;
-
-            await _postRepository.SaveChangesAsync();
-
-            return RedirectToAction("Details", new { id = article.Id });
+            // Eğer model geçerli değilse, View'a geri dön
+            ViewBag.Tags = _tagRepository.Tags.ToList();
+            return View(model);
         }
 
+
+
+
+
+
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var article = await _postRepository.Articles
@@ -137,6 +210,7 @@ namespace DBlog.Controllers
             return View(article);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -154,52 +228,62 @@ namespace DBlog.Controllers
 
             return RedirectToAction("Index");
         }
-
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(ArticleCreateViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
-            }
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
-
-            var article = new Article
-            {
-                Title = model.Title,
-                Content = model.Content,
-                PublishedDate = DateTime.Now,
-                UserId = int.Parse(userId)
-            };
-
-            if (model.ImageFile != null && model.ImageFile.Length > 0)
-            {
-                var fileName = Path.GetFileName(model.ImageFile.FileName);
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
-
-                using (var stream = new FileStream(path, FileMode.Create))
+                string? fileName = null;
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
-                    await model.ImageFile.CopyToAsync(stream);
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                    var fileExtension = Path.GetExtension(model.ImageFile.FileName).ToLower();
+
+                    if (!allowedExtensions.Contains(fileExtension))
+                    {
+                        ModelState.AddModelError("ImageFile", "Lütfen yalnızca resim dosyası yükleyin.");
+                        return View(model);
+                    }
+
+                    fileName = model.ImageFile.FileName;
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await model.ImageFile.CopyToAsync(stream);
+                    }
                 }
 
-                article.ImageFile = $"/img/{fileName}";
+                var article = new Article
+                {
+                    Title = model.Title,
+                    Content = model.Content,
+                    Url = model.Url,
+                    IsActive = false,
+                    PublishedDate = DateTime.Now,
+                    ImageFile = fileName != null ? $"/img/{fileName}" : null,
+                    UserId = int.Parse(userId ?? "")
+                };
+
+                _postRepository.Articles.Add(article);
+                await _postRepository.SaveChangesAsync();
+
+                return RedirectToAction("Index", "Article");
             }
-
-            _postRepository.Articles.Add(article);
-            await _postRepository.SaveChangesAsync();
-
-            return RedirectToAction("Index", "Article");
+            return View(model);
         }
+
+
+
 
         [Authorize]
         public async Task<IActionResult> GetComments()
@@ -213,27 +297,37 @@ namespace DBlog.Controllers
         }
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddComment(AddCommentViewModel model)
+        public JsonResult AddComment(int ArticleId, string Content)
         {
-            if (!ModelState.IsValid)
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var username = User.FindFirstValue(ClaimTypes.Name);
+            var avatar = User.FindFirstValue(ClaimTypes.UserData);
+            var entity = new Comment
             {
-                return View(model);
-            }
-
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "");
-
-            var comment = new Comment
-            {
-                Content = model.Content,
-                UserId = userId,
-                ArticleId = model.ArticleId,
-                CommentDate = DateTime.UtcNow
+                ArticleId = ArticleId,
+                Content = Content,
+                CommentDate = DateTime.Now,
+                UserId = int.Parse(userId ?? "")
             };
 
-            await _commentRepository.AddCommentAsync(comment);
+            _commentRepository.CreateComment(entity);
 
-            return RedirectToAction("Details", "Article", new { id = model.ArticleId });
+
+            return Json(new
+            {
+                username,
+                Content,
+                entity.CommentDate,
+                avatar
+            });
         }
+
+
+
+
+
+
+
 
         [Authorize]
         public async Task<IActionResult> EditComment(int id)
@@ -251,67 +345,67 @@ namespace DBlog.Controllers
             return View(comment);
         }
 
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditComment(int id, [Bind("CommentId,Content")] Comment comment, User user)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var existingComment = await _commentRepository.Comments
-                        .Include(c => c.User)
-                        .Include(c => c.Article)
-                        .FirstOrDefaultAsync(c => c.CommentId == id);
+        // [HttpPost]
+        // [Authorize]
+        // [ValidateAntiForgeryToken]
+        // public async Task<IActionResult> EditComment(int id, [Bind("CommentId,Content")] Comment comment, User user)
+        // {
+        //     if (ModelState.IsValid)
+        //     {
+        //         try
+        //         {
+        //             var existingComment = await _commentRepository.Comments
+        //                 .Include(c => c.User)
+        //                 .Include(c => c.Article)
+        //                 .FirstOrDefaultAsync(c => c.CommentId == id);
 
-                    if (existingComment == null)
-                    {
-                        return NotFound();
-                    }
+        //             if (existingComment == null)
+        //             {
+        //                 return NotFound();
+        //             }
 
-                    comment.User = existingComment.User;
-                    comment.Article = existingComment.Article;
-                    comment.UserId = existingComment.UserId;
-                    comment.ArticleId = existingComment.ArticleId;
+        //             comment.User = existingComment.User;
+        //             comment.Article = existingComment.Article;
+        //             comment.UserId = existingComment.UserId;
+        //             comment.ArticleId = existingComment.ArticleId;
 
-                    existingComment.Content = comment.Content;
+        //             existingComment.Content = comment.Content;
 
-                    _commentRepository.Update(existingComment);
-                    await _commentRepository.SaveChangesAsync();
-                    return RedirectToAction(nameof(GetComments));
-                }
-                catch (DbUpdateConcurrencyException ex)
-                {
-                    if (!_commentRepository.Comments.Any(e => e.CommentId == comment.CommentId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Concurrency exception: {ex.Message}");
-                        throw;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
-                    throw;
-                }
-            }
-            else
-            {
-                ModelState.Remove("User");
-                ModelState.Remove("Article");
+        //             _commentRepository.Update(existingComment);
+        //             await _commentRepository.SaveChangesAsync();
+        //             return RedirectToAction(nameof(GetComments));
+        //         }
+        //         catch (DbUpdateConcurrencyException ex)
+        //         {
+        //             if (!_commentRepository.Comments.Any(e => e.CommentId == comment.CommentId))
+        //             {
+        //                 return NotFound();
+        //             }
+        //             else
+        //             {
+        //                 Console.WriteLine($"Concurrency exception: {ex.Message}");
+        //                 throw;
+        //             }
+        //         }
+        //         catch (Exception ex)
+        //         {
+        //             Console.WriteLine($"An error occurred: {ex.Message}");
+        //             throw;
+        //         }
+        //     }
+        //     else
+        //     {
+        //         ModelState.Remove("User");
+        //         ModelState.Remove("Article");
 
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    Console.WriteLine($"ModelState error: {error.ErrorMessage}");
-                }
+        //         foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+        //         {
+        //             Console.WriteLine($"ModelState error: {error.ErrorMessage}");
+        //         }
 
-                return View(comment);
-            }
-        }
+        //         return View(comment);
+        //     }
+        // }
 
 
 

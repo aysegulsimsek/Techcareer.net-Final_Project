@@ -19,8 +19,7 @@
         }
 
         .container {
-            max-width: max-content;
-            padding: 0;
+        @*max-width:max-content;*@padding: 0;
         }
 
         .hero {
@@ -143,10 +142,21 @@
 <body>
     <div class="user-select-none w-100">
         <div class="hero m-auto mt-5 rounded-3 w-75">
-            <div class="container hero-text">
+            <div class=" hero-text">
                 <h1 class="display-4 fw-bold">Welcome to My Blog</h1>
                 <p class="lead fw-bold">Your go-to place for insightful articles and updates.</p>
-                <a asp-controller="Article" asp-action="Index" class="btn btn-light btn-lg">Read Our Articles</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="@Url.Action("Index", "Article")" class="btn btn-light btn-lg">Read Our Articles</a>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a href="@Url.Action("Login", "Users")" class="btn btn-light btn-lg">Read Our Articles</a>
+                    </li>
+                }
+
+
             </div>
         </div>
 
@@ -182,8 +192,8 @@
             </div>
         </div>
 
-        <div class="testimonial m-auto mt-5 rounded-2  w-75">
-            <div class="container test-md">
+        <div class="testimonial m-auto mt-5  rounded-2  w-75">
+            <div class=" test-md">
                 <h2 class="text-center mb-4 h2_color">Okurlarımız Ne Diyor?</h2>
                 <div class="swiper-container">
                     <div class="swiper-wrapper">
@@ -261,9 +271,7 @@
             <div class="swiper-button-next "></div>
             <div class="swiper-button-prev"></div>
         </div>
-        <footer class="text-center footer mt-4 py-4 w-100">
-            <p class="mt-2">&copy; 2024 My Blog. All rights reserved.</p>
-        </footer>
+
 
     </div>
 

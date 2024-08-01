@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article Create</title>
+    <title>Create Article</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .container-custom {
@@ -38,8 +38,8 @@
 </head>
 
 <body>
-    <div class="container container-custom">
-        <div class="text-center font-l"><i>Makale Oluştur</i></div>
+    <div class="container container-custom" id="createArticle">
+        <div class="text-center font-l mb-3"><i>Create Article</i></div>
         <div>
             @if (ViewBag.Message != null)
             {
@@ -49,26 +49,37 @@
             }
         </div>
 
-        <form asp-action="Create" asp-controller="Article" method="post" enctype="multipart/form-data">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label asp-for="Title" class="form-label">Makale Başlığı</label>
-                <input asp-for="Title" class="form-control" required />
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Content" class="form-label">Makalenizin İçeriği</label>
-                <textarea asp-for="Content" class="form-control" required></textarea>
+                <label asp-for="Content"></label>
+                <textarea asp-for="Content" class="form-control"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageFile" class="form-label">Makalenize Resim Ekleyin</label>
-                <input type="file" asp-for="ImageFile" class="form-control" />
+                <label asp-for="Url"></label>
+                <input asp-for="Url" class="form-control" />
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageFile"></label>
+                <input asp-for="ImageFile" type="file" class="form-control" />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-success">Oluştur</button>
+            <button type="submit" class="btn btn-primary">Oluştur</button>
         </form>
-    </div>
 
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/7.2.1/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: '#Content'
+        });
+    </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>

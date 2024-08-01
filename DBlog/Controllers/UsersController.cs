@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using DBlog.ViewModels;
 using System.Text.Json;
 
 
@@ -34,6 +33,10 @@ namespace DBlog.Controllers
 
         public IActionResult Register()
         {
+            if (User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Home", "Article");
+            }
             return View("Register");
         }
 
@@ -68,7 +71,7 @@ namespace DBlog.Controllers
         {
             if (ModelState.IsValid)
             {
-                var isUser = await _userRepository.Users.FirstOrDefaultAsync(x => x.UserName == model.UserName && x.Password == model.Password);
+                var isUser = await _userRepository.Users.FirstOrDefaultAsync(x => x.Email == model.Email && x.Password == model.Password);
 
                 if (isUser != null)
                 {
@@ -80,7 +83,7 @@ namespace DBlog.Controllers
                         new Claim(ClaimTypes.UserData, isUser.Image ?? "")
                     };
 
-                    if (isUser.UserName == "admin")
+                    if (isUser.Email == "info@asimsek.com")
                     {
                         userClaims.Add(new Claim(ClaimTypes.Role, "admin"));
                     }
@@ -109,6 +112,7 @@ namespace DBlog.Controllers
             return RedirectToAction("Login");
         }
 
+        [Authorize]
 
         public async Task<IActionResult> Profile(int id)
         {
