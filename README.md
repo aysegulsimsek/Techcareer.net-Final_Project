@@ -1,4 +1,5 @@
 # Blog Application
+# See Preview Image
 Welcome to the Blog Application! This platform allows users to explore articles, interact with informative content, and communicate through comments.
 This document provides an overview of the application's features and user interface components.
 # Overview
