@@ -22,10 +22,10 @@ namespace DBlog.Models
 
         public bool IsActive { get; set; }
 
-        public string? ExistingImageFile { get; set; } // Mevcut görsel
+        public string? ExistingImageFile { get; set; }
 
         [Display(Name = "Makale Resmi")]
-        public IFormFile? ImageFile { get; set; } // Yeni yüklenen görsel
+        public IFormFile? ImageFile { get; set; }
 
         public List<Tag> Tags { get; set; } = new();
 

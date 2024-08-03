@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using DBlog.Models;
 using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
+
 namespace DBlog.Controllers
 {
     public class ArticleController : Controller
@@ -16,11 +17,15 @@ namespace DBlog.Controllers
         private readonly ICommentRepository _commentRepository;
         private readonly IPostRepository _postRepository;
         private readonly IUserRepository _userRepository;
-
         private ITagRepository _tagRepository;
         private readonly ILogger<ArticleController> _logger;
 
-        public ArticleController(ILogger<ArticleController> logger, ICommentRepository commentRepository, IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository)
+        public ArticleController(
+            ILogger<ArticleController> logger,
+            ICommentRepository commentRepository,
+            IPostRepository postRepository,
+            IUserRepository userRepository,
+            ITagRepository tagRepository)
         {
             _commentRepository = commentRepository;
             _postRepository = postRepository;
@@ -29,7 +34,6 @@ namespace DBlog.Controllers
             _logger = logger;
         }
 
-        // Home
         public IActionResult Home()
         {
             var claims = User.Claims;
@@ -39,15 +43,10 @@ namespace DBlog.Controllers
         [Authorize]
         public async Task<IActionResult> MyBlog()
         {
-
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "");
-
-
             var articles = await _postRepository.Articles
                 .Where(a => a.UserId == userId)
                 .ToListAsync();
-
-
             var articleViewModel = new ArticleViewModel
             {
                 Articles = articles,
@@ -57,10 +56,7 @@ namespace DBlog.Controllers
             return View(articleViewModel);
         }
 
-
-        // Index
         [Authorize]
-
         public async Task<IActionResult> Index(string tag)
         {
             IQueryable<Article> posts = _postRepository.Articles
@@ -82,16 +78,15 @@ namespace DBlog.Controllers
             return View(viewModel);
         }
 
-
-
-
         [Authorize]
-
         public async Task<IActionResult> Details(string url)
         {
-            return View(await _postRepository.Articles.Include(x => x.User).Include(x => x.Tags).Include(x => x.Comments).ThenInclude(x => x.User).FirstOrDefaultAsync(p => p.Url == url));
+            return View(await _postRepository.Articles
+                .Include(x => x.User)
+                .Include(x => x.Tags)
+                .Include(x => x.Comments).ThenInclude(x => x.User)
+                .FirstOrDefaultAsync(p => p.Url == url));
         }
-
 
         [Authorize]
         public IActionResult Edit(int? id)
@@ -100,28 +95,25 @@ namespace DBlog.Controllers
             {
                 return NotFound();
             }
-            var article = _postRepository.Articles.Include(x => x.Tags).FirstOrDefault(i => i.Id == id);
 
+            var article = _postRepository.Articles.Include(x => x.Tags).FirstOrDefault(i => i.Id == id);
             if (article == null)
             {
                 return NotFound();
             }
 
             ViewBag.Tags = _tagRepository.Tags.ToList();
-            return View(
-                new ArticleCreateViewModel
-                {
-                    Id = article.Id,
-                    Title = article.Title,
-                    Content = article.Content,
-                    Url = article.Url,
-                    IsActive = article.IsActive,
-                    ExistingImageFile = article.ImageFile
-
-                }
-
-                );
+            return View(new ArticleCreateViewModel
+            {
+                Id = article.Id,
+                Title = article.Title,
+                Content = article.Content,
+                Url = article.Url,
+                IsActive = article.IsActive,
+                ExistingImageFile = article.ImageFile
+            });
         }
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit(ArticleCreateViewModel model, int[] tagIds)
@@ -129,7 +121,6 @@ namespace DBlog.Controllers
             if (ModelState.IsValid)
             {
                 var existingArticle = await _postRepository.FindAsync(model.Id);
-
                 if (existingArticle == null)
                 {
                     return NotFound();
@@ -184,17 +175,10 @@ namespace DBlog.Controllers
             return View(model);
         }
 
-
-
-
-
-
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            var article = await _postRepository.Articles
-                .FirstOrDefaultAsync(a => a.Id == id);
-
+            var article = await _postRepository.Articles.FirstOrDefaultAsync(a => a.Id == id);
             if (article == null)
             {
                 return NotFound("Article not found.");
@@ -208,9 +192,7 @@ namespace DBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var article = await _postRepository.Articles
-                .FirstOrDefaultAsync(a => a.Id == id);
-
+            var article = await _postRepository.Articles.FirstOrDefaultAsync(a => a.Id == id);
             if (article == null)
             {
                 return NotFound("Article not found.");
@@ -221,6 +203,7 @@ namespace DBlog.Controllers
 
             return RedirectToAction("Index");
         }
+
         [Authorize]
         public IActionResult Create()
         {
@@ -234,8 +217,8 @@ namespace DBlog.Controllers
             if (ModelState.IsValid)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
                 string? fileName = null;
+
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
                     var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
@@ -272,11 +255,9 @@ namespace DBlog.Controllers
 
                 return RedirectToAction("Index", "Article");
             }
+
             return View(model);
         }
-
-
-
 
         [Authorize]
         public async Task<IActionResult> GetComments()
@@ -288,6 +269,7 @@ namespace DBlog.Controllers
 
             return View(comments);
         }
+
         [Authorize]
         [HttpPost]
         public JsonResult AddComment(int ArticleId, string Content)
@@ -295,6 +277,7 @@ namespace DBlog.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var username = User.FindFirstValue(ClaimTypes.Name);
             var avatar = User.FindFirstValue(ClaimTypes.UserData);
+
             var entity = new Comment
             {
                 ArticleId = ArticleId,
@@ -305,7 +288,6 @@ namespace DBlog.Controllers
 
             _commentRepository.CreateComment(entity);
 
-
             return Json(new
             {
                 username,
@@ -314,28 +296,27 @@ namespace DBlog.Controllers
                 avatar
             });
         }
+
         [Authorize]
         public async Task<IActionResult> EditComment(int id)
         {
-            // Fetch the comment including related User and Article
             var comment = await _commentRepository.Comments
-                .Include(c => c.User)      // Make sure User is included
-                .Include(c => c.Article)   // Make sure Article is included
+                .Include(c => c.User)
+                .Include(c => c.Article)
                 .FirstOrDefaultAsync(c => c.CommentId == id);
 
             if (comment == null)
             {
-                return NotFound();  // Handle not found case
+                return NotFound();
             }
 
-            // Ensure that related entities are not null
             if (comment.User == null || comment.Article == null)
             {
                 ModelState.AddModelError("", "İlgili kullanıcı veya makale bulunamadı.");
-                return View(comment);  // Return view with error message
+                return View(comment);
             }
 
-            return View(comment);  // Pass the comment to the view for editing
+            return View(comment);
         }
 
         [HttpPost]
@@ -344,38 +325,35 @@ namespace DBlog.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model); // Return view with the current model to display validation errors
+                return View(model);
             }
 
             var existingComment = await _commentRepository.Comments
-                .Include(c => c.User) // Include User to ensure data integrity
-                .Include(c => c.Article) // Include Article to ensure data integrity
+                .Include(c => c.User)
+                .Include(c => c.Article)
                 .FirstOrDefaultAsync(c => c.CommentId == id);
 
             if (existingComment == null)
             {
-                return NotFound(); // Handle not found case
+                return NotFound();
             }
 
-            // Update the comment's content
             existingComment.Content = model.Content;
 
             try
             {
-                _commentRepository.Update(existingComment); // Use repository method to update
-                await _commentRepository.SaveChangesAsync(); // Save changes asynchronously
+                _commentRepository.Update(existingComment);
+                await _commentRepository.SaveChangesAsync();
 
                 TempData["SuccessMessage"] = "Yorum başarıyla güncellendi!";
-                return RedirectToAction("GetComments"); // Redirect to comments list
+                return RedirectToAction("GetComments");
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", "Yorum güncellenirken bir hata oluştu: " + ex.Message);
-                return View(model); // Return view with error message
+                return View(model);
             }
         }
-
-
 
         [Authorize]
         [HttpGet]
@@ -415,19 +393,14 @@ namespace DBlog.Controllers
                 return View(comment);
             }
 
-
             if (User.IsInRole("admin"))
             {
-
                 return RedirectToAction("GetComments");
             }
             else
             {
-
                 return RedirectToAction("Profile", "Users", new { username = User.Identity.Name });
             }
         }
-
-
     }
 }

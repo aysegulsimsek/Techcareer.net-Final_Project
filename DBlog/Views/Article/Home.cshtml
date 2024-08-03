@@ -143,16 +143,16 @@
     <div class="user-select-none w-100">
         <div class="hero m-auto mt-5 rounded-3 w-75">
             <div class=" hero-text">
-                <h1 class="display-4 fw-bold">Welcome to My Blog</h1>
-                <p class="lead fw-bold">Your go-to place for insightful articles and updates.</p>
+                <h1 class="display-4 fw-bold">Blog'a Hoş Geldiniz</h1>
+                <p class="lead fw-bold">Bilgilendirici makaleler ve güncellemeler için başvurulacak yeriniz.</p>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a href="@Url.Action("Index", "Article")" class="btn btn-light btn-lg">Read Our Articles</a>
+                    <a href="@Url.Action("Index", "Article")" class="btn btn-light btn-lg">Makaleleri gör</a>
                 }
                 else
                 {
                     <li class="nav-item">
-                        <a href="@Url.Action("Login", "Users")" class="btn btn-light btn-lg">Read Our Articles</a>
+                        <a href="@Url.Action("Login", "Users")" class="btn btn-light btn-lg">Makaleleri gör</a>
                     </li>
                 }
 

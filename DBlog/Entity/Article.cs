@@ -18,7 +18,6 @@ namespace DBlog.Entity
         public string? Url { get; set; }
         public bool IsActive { get; set; }
         public string? ImageFile { get; set; }
-        // public string? ImageFilePath { get; set; }
 
         [Required(ErrorMessage = "Yayın tarihi gereklidir")]
         public DateTime PublishedDate { get; set; } = DateTime.Now;
@@ -26,7 +25,6 @@ namespace DBlog.Entity
         [Required(ErrorMessage = "Kullanıcı ID'si gereklidir")]
         public int UserId { get; set; }
         public User User { get; set; } = null!;
-        // public List<Tag> Tags { get; set; } = new List<Tag>();
         public ICollection<Tag> Tags { get; set; } = new List<Tag>();
 
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
