@@ -113,31 +113,101 @@ namespace DBlog.Controllers
         }
 
         [Authorize]
-
-        public async Task<IActionResult> Profile(int id)
+        public IActionResult Profile(string username)
         {
-            var user = await _userRepository.GetUserById(id);
+            if (string.IsNullOrEmpty(username))
+            {
+                return NotFound();
+            }
+
+            var user = _userRepository.Users
+                .Include(x => x.Articles)
+                .Include(x => x.Comments)
+                .ThenInclude(c => c.Article)
+                .FirstOrDefault(x => x.UserName == username);
+
             if (user == null)
             {
                 return NotFound();
             }
 
-            var profileViewModel = new ProfileViewModel
+            return View(user);
+        }
+        [HttpGet]
+        public async Task<IActionResult> UpdateProfile(string username)
+        {
+            if (string.IsNullOrEmpty(username))
             {
-                UserId = user.UserId,
-                UserName = user.UserName,
-                Name = user.Name,
-                Email = user.Email,
-                Image = user.Image
-            };
+                username = User.Identity.Name;
+            }
 
-            return View(profileViewModel);
+            var user = await _userRepository.Users.FirstOrDefaultAsync(u => u.UserName == username);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfile(User model)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var user = await _userRepository.Users.FirstOrDefaultAsync(u => u.UserName == model.UserName);
+
+                if (user != null)
+                {
+
+                    if (!string.IsNullOrEmpty(model.Name) && model.Name != user.Name)
+                    {
+                        user.Name = model.Name;
+                    }
 
 
+                    if (!string.IsNullOrEmpty(model.Email) && model.Email != user.Email)
+                    {
+                        user.Email = model.Email;
+                    }
 
+
+                    if (!string.IsNullOrEmpty(model.Password) && model.Password != user.Password)
+                    {
+                        user.Password = model.Password;
+                    }
+
+
+                    if (model.ImageFile != null && model.ImageFile.Length > 0)
+                    {
+                        // Yeni resim kaydet
+                        var imagePath = Path.Combine("wwwroot/img", model.ImageFile.FileName);
+                        using (var stream = new FileStream(imagePath, FileMode.Create))
+                        {
+                            await model.ImageFile.CopyToAsync(stream);
+                        }
+                        user.Image = model.ImageFile.FileName;
+                    }
+
+                    _userRepository.Update(user);
+                    await _userRepository.SaveChangesAsync();
+
+                    TempData["SuccessMessage"] = "Profil başarıyla güncellendi.";
+
+
+                    return RedirectToAction("Profile", "Users", new { username = user.UserName });
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Kullanıcı bulunamadı.");
+                }
+            }
+
+            return View(model);
+        }
     }
 }
 

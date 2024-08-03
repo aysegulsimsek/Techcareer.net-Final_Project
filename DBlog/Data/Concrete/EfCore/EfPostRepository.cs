@@ -47,7 +47,6 @@ namespace DBlog.Data.Concrete
                 entity.Url = article.Url;
                 entity.IsActive = article.IsActive;
 
-                // Mevcut etiketlerle birleştir
                 var currentTagIds = entity.Tags.Select(t => t.TagId).ToList();
                 var newTags = _context.Tags.Where(tag => tagIds.Contains(tag.TagId) && !currentTagIds.Contains(tag.TagId)).ToList();
 
@@ -71,7 +70,6 @@ namespace DBlog.Data.Concrete
                 entity.IsActive = article.IsActive;
                 entity.ImageFile = article.ImageFile;
 
-                // Mevcut etiketlerle birleştir
                 var currentTagIds = entity.Tags.Select(t => t.TagId).ToList();
                 var newTags = article.Tags.Where(tag => !currentTagIds.Contains(tag.TagId)).ToList();
 

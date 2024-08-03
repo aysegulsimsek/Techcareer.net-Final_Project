@@ -17,17 +17,25 @@ namespace DBlog.Data.Concrete
 
         public IQueryable<Comment> Comments => _context.Comments.AsQueryable();
 
-        // public void CreateComment(Comment comment)
-        // {
-        //     _context.Comments.Add(comment);
-        // }
-        public void Update(Comment comment)
-        {
-            _context.Entry(comment).State = EntityState.Modified;
-        }
+
         public void EditComment(Comment comment)
         {
-            _context.Comments.Update(comment);
+            var entity = _context.Comments.Include(i => i.Article).Include(c => c.User).FirstOrDefault(i => i.CommentId == comment.CommentId);
+            if (entity != null)
+            {
+                entity.Content = comment.Content;
+                _context.SaveChanges();
+            }
+        }
+        public void Update(Comment comment)
+        {
+            var entity = _context.Comments.Include(a => a.Article).Include(c => c.User).FirstOrDefault(i => i.CommentId == comment.CommentId);
+            if (entity != null)
+            {
+                entity.Content = comment.Content;
+                _context.Comments.Update(entity);
+                _context.SaveChanges();
+            }
         }
 
         public void DeleteComment(Comment comment)
@@ -39,15 +47,6 @@ namespace DBlog.Data.Concrete
             await _context.Comments.AddAsync(comment);
             await _context.SaveChangesAsync();
         }
-        public async Task<Comment?> FindAsync(int id)
-        {
-            return await _context.Comments.FindAsync(id);
-        }
-
-        public async Task<int> SaveChangesAsync()
-        {
-            return await _context.SaveChangesAsync();
-        }
         public async Task<IEnumerable<Comment>> GetUserCommentsAsync(int userId)
         {
             return await _context.Comments
@@ -58,17 +57,29 @@ namespace DBlog.Data.Concrete
         {
             try
             {
-                // Entity Framework veya başka bir ORM ile veritabanına kaydet
                 _context.Comments.Add(entity);
                 _context.SaveChanges();
             }
             catch (Exception)
             {
-                // // Hata mesajını loglayın
-                // _logger.LogError(ex, "Yorum kaydedilemedi: {@entity}", entity);
                 throw;
             }
         }
+        public async Task<Comment?> FindAsync(int id)
+        {
+            return await _context.Comments
+                .Include(c => c.User)
+                .Include(c => c.Article)
+                .FirstOrDefaultAsync(c => c.CommentId == id);
+        }
 
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
+        public void Remove(Comment comment)
+        {
+            _context.Comments.Remove(comment);
+        }
     }
 }

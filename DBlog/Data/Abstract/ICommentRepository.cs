@@ -15,5 +15,6 @@ namespace DBlog.Data.Abstract
         Task<Comment?> FindAsync(int id);
         Task<int> SaveChangesAsync();
         void Update(Comment comment);
+        void Remove(Comment comment);
     }
 }

@@ -19,7 +19,6 @@ namespace DBlog.Models
         public List<Article> Articles { get; set; } = new();
 
         public List<Comment> Comments { get; set; } = new();
-        // public IEnumerable<Comment>? Comments { get; set; }//bunu yazınca çalışmıyor
 
     }
 }

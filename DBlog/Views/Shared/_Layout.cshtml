@@ -39,8 +39,13 @@
         }
 
         .container {
-            padding-top: 20px;
+            padding: 0;
+            margin: 0;
+            min-height: 550px;
+            width: 80%;
+            margin: 2rem auto;
             background-color: #fff;
+        @*box-shadow:04px6pxrgba(0,0,0,0.1);*@border-radius: 2rem;
         }
 
         footer.footer {
@@ -127,23 +132,26 @@
         <ul class="navbar-nav ms-auto d-flex">
             @if (User.Identity!.IsAuthenticated)
             {
+                @functions {
+                public string CapitalizeFirstLetter(string input)
+                {
+                    if (string.IsNullOrEmpty(input))
+                        return input;
+                    return char.ToUpper(input[0]) + input.Substring(1);
+                }
+            }
+
                 <li class="nav-item">
-                    <a asp-controller="Users" asp-action="Profile"
-                        asp-route-id="@User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value"
+                    <a asp-controller="Users" asp-action="Profile" asp-route-username="@User.Identity.Name"
                         class="navlink align-items-center text-decoration-none">
                         <span class="material-symbols-outlined">account_circle</span>
-                        @functions {
-                        public string CapitalizeFirstLetter(string input)
-                        {
-                            if (string.IsNullOrEmpty(input))
-                                return input;
-                            return char.ToUpper(input[0]) + input.Substring(1);
-                        }
-                    }
+                        <span class="mt-1">@CapitalizeFirstLetter(User.Identity.Name)</span>
+                    </a>
+                </li>
 
-                    <span class="mt-1">@CapitalizeFirstLetter(User.Identity.Name)</span>
-                </a>
-            </li>
+
+
+
                 <li class="nav-item">
                     <a class="navlink align-items-center gap-1 text-decoration-none" asp-controller="Users"
                         asp-action="Logout">
@@ -166,12 +174,34 @@
     <footer class="text-center footer mt-4 py-4 w-100">
         <p class="mt-2 user-select-none">&copy; 2024 My Blog. All rights reserved.</p>
     </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var navItems = document.querySelectorAll(".nav_li");
+            navItems.forEach(function (item) {
+                item.classList.remove("active");
+            });
+
+            if (currentUrl.includes("/article")) {
+                document.getElementById("articleIndexLi").classList.add("active");
+            } else if (currentUrl === "/" || currentUrl.includes("/Article/Home")) {
+                document.getElementById("homeIndexLi").classList.add("active");
+            } else if (currentUrl.includes("/article/myblog")) {
+                document.getElementById("myblogLi").classList.add("active");
+            } else if (currentUrl.includes("/contact/contact")) {
+                document.getElementById("contactIndexLi").classList.add("active");
+            } else if (currentUrl.includes("/article/getcomments")) {
+                document.getElementById("commentsIndexLi").classList.add("active");
+            }
+        });
+
+    </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.0.0/dist/emoji-picker-element.js"></script>
 
-    <script src="~/js/script.js"></script>
+    @* <script src="~/js/script.js"></script> *@
+
     @RenderSection("Scripts", required: false)
 </body>
 

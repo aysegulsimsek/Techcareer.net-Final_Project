@@ -1,4 +1,4 @@
-﻿@model ProfileViewModel
+﻿@model DBlog.Entity.User
 
 @section Styles {
     <style>
@@ -11,6 +11,11 @@
         .container {
             padding: 0;
             margin: 0;
+            min-height: 550px;
+            width: 80%;
+            margin: 2rem auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 2rem;
         }
 
         body {
@@ -19,12 +24,8 @@
                 radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
-            width: 100%;
             text-align: center;
-            min-height: 400px;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            min-height: 600px;
         }
 
         .profile_section {
@@ -33,6 +34,10 @@
             align-items: center;
             justify-content: center;
             margin: auto;
+        }
+
+        .comment_section {
+            margin-right: 2rem;
         }
 
         .profile_image {
@@ -71,21 +76,37 @@
             font-size: small;
 
         }
+
+        .container {
+            padding: 0;
+        }
+
+        .delete_btn {
+            padding: 5px 10px;
+            margin-left: 1rem;
+        }
+
+        .container-fluid {
+            padding: 0;
+            max-width: 100%;
+            display: flex;
+            justify-content: center;
+        }
     </style>
 }
 
 
-<div class="d-flex">
-    <div class="profile_section">
+<div class="container-fluid d-flex gap-2">
+    <div class="profile_section mt-5">
         <div class="profile-info">
             <div class="profile_image">
                 @if (!string.IsNullOrEmpty(Model.Image))
                 {
-                    <img src="/img/@Model.Image" alt="@Model.UserName" style="width: 100px; border-radius: 100%;" />
+                    <img src="~/img/@Model.Image" alt="@Model.UserName" style="width: 100px; border-radius: 100%;" />
                 }
                 else
                 {
-                    <img src="/img/user.png" alt="Default Profile Image" style="width: 100px; border-radius: 100%;" />
+                    <img src="~/img/user.png" alt="Default Profile Image" style="width: 100px; border-radius: 100%;" />
                 }
 
             </div>
@@ -94,8 +115,117 @@
                 <p><i>Name:</i> @Model.Name</p>
                 <p><i>Email:</i> @Model.Email</p>
                 <p><i>Password:</i> *******</p>
+                <button class="btn btn-primary"><a href="/Users/UpdateProfile" class="text-white">Edit
+                        Profile</a></button>
             </div>
         </div>
     </div>
+    <div class="comment_section mt-4 border col-lg-6">
+        <div id="comments">
+            <h5 class="my-4">Yorumlar</h5>
+
+            @if (Model.Comments != null && Model.Comments.Any())
+            {
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="col-6">Comment</th>
+                            <th scope="col" class="col-4">Article Title</th>
+                            <th scope="col" class="col-2 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <tr class="comment-item">
+                                <td><a class="text-black"
+                                        href="@Url.Action("EditComment", "Article", new { id = comment.CommentId })">@comment.Content</a>
+                                </td>
+                                <td><a class=" text-black"
+                                        href="@Url.Action("Details", "Article", new { url = comment.Article.Url })">@comment.Article.Title</a>
+                                </td>
+
+                                <td class="">
+                                    <button
+                                        class="d-flex align-items-center justify-content-center m-auto btn btn-danger delete_btn">
+                                        <a class="btn btn-danger" asp-action="DeleteComment" asp-controller="Article"
+                                            asp-route-id="@comment.CommentId">Sil</a>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Henüz yorum yapılmamış.</p>
+            }
+        </div>
+        <nav>
+            <ul class="pagination justify-content-center" id="pagination">
+            </ul>
+        </nav>
+    </div>
+
+
 
 </div>
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const itemsPerPage = 3;
+            const comments = document.querySelectorAll(".comment-item"); // Select comment items
+            const totalItems = comments.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+
+            let currentPage = 1;
+
+            function showPage(page) {
+                comments.forEach((comment, index) => {
+                    comment.style.display = 'none';
+                });
+
+                const startIndex = (page - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+
+                for (let i = startIndex; i < endIndex && i < totalItems; i++) {
+                    comments[i].style.display = 'table-row'; // Use 'table-row' for table display
+                }
+
+                updatePagination(page);
+            }
+
+            function updatePagination(page) {
+                pagination.innerHTML = '';
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const li = document.createElement('li');
+                    li.className = 'page-item';
+
+                    const a = document.createElement('a');
+                    a.className = 'page-link';
+                    a.href = '#';
+                    a.innerText = i;
+
+                    if (i === page) {
+                        li.classList.add('active'); // Add active class to the list item
+                    }
+
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentPage = i;
+                        showPage(currentPage);
+                    });
+
+                    li.appendChild(a);
+                    pagination.appendChild(li);
+                }
+            }
+
+            showPage(currentPage);
+        });
+    </script>
+
+}

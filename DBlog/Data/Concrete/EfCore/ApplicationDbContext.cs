@@ -23,7 +23,7 @@ namespace DBlog.Data
                 .HasMany(a => a.Comments)
                 .WithOne(c => c.Article)
                 .HasForeignKey(c => c.ArticleId)
-                .OnDelete(DeleteBehavior.Cascade); // İlişki silme davranışı
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.Article)

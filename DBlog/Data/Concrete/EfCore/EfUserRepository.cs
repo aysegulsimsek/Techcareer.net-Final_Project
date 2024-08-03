@@ -34,10 +34,9 @@ namespace DBlog.Data.Concrete
             return _context.SaveChangesAsync();
         }
 
-        public Task UpdateUser(User user)
+        public void Update(User user)
         {
-            _context.Users.Update(user);
-            return SaveChangesAsync();
+            _context.Entry(user).State = EntityState.Modified;
         }
 
 

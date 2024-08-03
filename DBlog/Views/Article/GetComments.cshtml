@@ -1,39 +1,102 @@
 @model IEnumerable<DBlog.Entity.Comment>
+
 @section Styles {
     <style>
         .container {
             padding: 0;
             height: 100%;
         }
-    </style>
 
+        .cont_hugh {
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: max-content;
+            margin: 2rem auto;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .comment-content {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .user-name,
+        .article-title {
+            width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .comment-date {
+            width: 120px;
+        }
+
+        .action-buttons {
+            width: 180px;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn {
+            flex-grow: 1;
+            white-space: nowrap;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .pagination .page-item .page-link {
+            color: #007bff;
+        }
+
+        .pagination .page-item .page-link:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+    </style>
 }
-<div class="container">
+
+<div class="cont_hugh">
     <h2>Comments</h2>
 
     @if (Model.Any())
     {
-        <table class="table">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Comment</th>
-                    <th>User</th> <!-- Düzeltilmiş başlık -->
+                    <th>User</th>
                     <th>Article Title</th>
                     <th>Comment Date</th>
-
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var comment in Model)
                 {
-                    <tr class="table_content">
-                        <td>@comment.Content</td>
-                        <td>@comment.User?.UserName</td> <!-- Kullanıcı adı -->
-                        <td>@comment.Article?.Title</td>
-                        <td>@comment.CommentDate.ToString("g")</td>
-
-                        <td>
+                    <tr class="comment-item">
+                        <td class="comment-content">@comment.Content</td>
+                        <td class="user-name">@comment.User?.UserName</td>
+                        <td class="article-title"><a class=" text-black"
+                                href="@Url.Action("Details", "Article", new { url = @comment.Article.Url })">@comment.Article?.Title
+                            </a>
+                        </td>
+                        <td class="comment-date">@comment.CommentDate.ToString("g")</td>
+                        <td class="action-buttons">
                             <a class="btn btn-primary" asp-action="EditComment" asp-route-id="@comment.CommentId">Edit</a>
                             <a class="btn btn-danger" asp-action="DeleteComment" asp-route-id="@comment.CommentId">Delete</a>
                         </td>
@@ -46,4 +109,66 @@
     {
         <p>No comments found.</p>
     }
+    <nav>
+        <ul class="pagination justify-content-center" id="pagination">
+        </ul>
+    </nav>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const itemsPerPage = 10;
+            const comments = document.querySelectorAll(".comment-item");
+            const totalItems = comments.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+
+            let currentPage = 1;
+
+            function showPage(page) {
+                comments.forEach((comment, index) => {
+                    comment.style.display = 'none';
+                });
+
+                const startIndex = (page - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+
+                for (let i = startIndex; i < endIndex && i < totalItems; i++) {
+                    comments[i].style.display = 'table-row';
+                }
+
+                updatePagination(page);
+            }
+
+            function updatePagination(page) {
+                pagination.innerHTML = '';
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const li = document.createElement('li');
+                    li.className = 'page-item';
+
+                    const a = document.createElement('a');
+                    a.className = 'page-link';
+                    a.href = '#';
+                    a.innerText = i;
+
+                    if (i === page) {
+                        li.classList.add('active');
+                    }
+
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentPage = i;
+                        showPage(currentPage);
+                    });
+
+                    li.appendChild(a);
+                    pagination.appendChild(li);
+                }
+            }
+
+            showPage(currentPage);
+        });
+    </script>
+}

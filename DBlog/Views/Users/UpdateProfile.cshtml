@@ -1,0 +1,50 @@
+@model DBlog.Entity.User
+
+<div class="profile_section mt-3 mb-2 col-6 m-auto border p-4 rounded">
+    <h2 class="text-center">Profil Güncelle</h2>
+
+
+    <form asp-action="UpdateProfile" asp-controller="Users" method="post" enctype="multipart/form-data">
+        <div class="profile-info">
+            <div class="profile_image d-flex justify-content-center gap-3 align-items-center">
+                @if (!string.IsNullOrEmpty(Model.Image))
+                {
+                    <img src="~/img/@Model.Image" alt="@Model.UserName"
+                        style="width: 100px;height: 100px; border-radius: 100%;" />
+                }
+                else
+                {
+                    <img src="~/img/user.png" alt="Default Profile Image" style="width: 100px; border-radius: 100%;" />
+                }
+                <input type="file" name="ImageFile" accept="image/*" class="form-control mt-2"
+                    style="height: 35px; width: auto;" />
+            </div>
+            <div class="profile_details mt-3">
+                <div class="form-group">
+                    <label for="UserName"><i>Username:</i></label>
+                    <input type="text" id="UserName" name="UserName" class="form-control" value="@Model.UserName"
+                        readonly />
+                </div>
+                <div class="form-group mt-2">
+                    <label for="Name"><i>Name:</i></label>
+                    <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" />
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group mt-2">
+                    <label for="Email"><i>Email:</i></label>
+                    <input type="email" id="Email" name="Email" class="form-control" value="@Model.Email" />
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group mt-2">
+                    <label for="Password"><i>Password:</i></label>
+                    <input type="password" id="Password" name="Password" class="form-control" />
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary mt-3 text-center">Güncelle</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

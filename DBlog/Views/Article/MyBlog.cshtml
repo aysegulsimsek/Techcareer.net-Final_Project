@@ -18,7 +18,7 @@
                 radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
-            text-align: center;
+            @* text-align: center; *@
         }
 
         .container {
@@ -75,6 +75,8 @@
         }
 
         .article_content {
+            display: flex;
+            justify-content: baseline;
             text-align: justify;
         }
 
@@ -155,7 +157,7 @@
 }
 @if (Model.Articles != null && Model.Articles.Any())
 {
-    <div class="container">
+    <div class="">
         <div class="container_bg mt-3 w-75 m-auto">
             <div class="bg-white cont_hugh">
                 <div class="d-flex align-items-center justify-content-between main_header">
@@ -166,7 +168,7 @@
                 </div>
                 <hr class="hr">
 
-                <ul class="p-3 rounded-1 m-4 list-unstyled" id="article-list">
+                <ul class="p-3 rounded-1 m-4 list-unstyled border p-5" id="article-list">
                     @foreach (var article in Model.Articles)
                     {
 

@@ -11,6 +11,7 @@ namespace DBlog.Data.Abstract
         Task<User?> GetUserById(int id);
 
         Task SaveChangesAsync();
-        Task UpdateUser(User user);
+        void Update(User user);
+
     }
 }

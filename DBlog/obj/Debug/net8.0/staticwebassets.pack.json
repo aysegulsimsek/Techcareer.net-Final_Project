@@ -25,6 +25,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\0a6985cf-6b17-44f1-b929-d94cac2cf666_2e2cd042-6477-4424-8f00-0de8142e20b4_50cbc292-f5c3-437d-8b17-e2abe6e0eeea.jpg",
+      "PackagePath": "staticwebassets\\img\\0a6985cf-6b17-44f1-b929-d94cac2cf666_2e2cd042-6477-4424-8f00-0de8142e20b4_50cbc292-f5c3-437d-8b17-e2abe6e0eeea.jpg"
+    },
+    {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\1.jpeg",
       "PackagePath": "staticwebassets\\img\\1.jpeg"
     },
@@ -43,6 +47,14 @@
     {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\2e2cd042-6477-4424-8f00-0de8142e20b4_50cbc292-f5c3-437d-8b17-e2abe6e0eeea.jpg",
       "PackagePath": "staticwebassets\\img\\2e2cd042-6477-4424-8f00-0de8142e20b4_50cbc292-f5c3-437d-8b17-e2abe6e0eeea.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\3ed15739-ef0b-4d85-b2a1-5abe270534f3_R.jpg",
+      "PackagePath": "staticwebassets\\img\\3ed15739-ef0b-4d85-b2a1-5abe270534f3_R.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\3f11346f-4758-4eb5-8e5f-5e74e94eac5f_p3.png",
+      "PackagePath": "staticwebassets\\img\\3f11346f-4758-4eb5-8e5f-5e74e94eac5f_p3.png"
     },
     {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\50cbc292-f5c3-437d-8b17-e2abe6e0eeea.jpg",
@@ -91,6 +103,10 @@
     {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\cde2ed99-e603-43e7-84f5-86217bd5962b_5G.jpg",
       "PackagePath": "staticwebassets\\img\\cde2ed99-e603-43e7-84f5-86217bd5962b_5G.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\d28be248-1627-4554-86c9-deb9f93189ec_p1.jpg",
+      "PackagePath": "staticwebassets\\img\\d28be248-1627-4554-86c9-deb9f93189ec_p1.jpg"
     },
     {
       "Id": "C:\\Users\\ASUS\\OneDrive\\Masaüstü\\blog\\DBlog\\wwwroot\\img\\dc0f0730-9a02-4e21-bee3-10f2ce31b8e0.jpg",

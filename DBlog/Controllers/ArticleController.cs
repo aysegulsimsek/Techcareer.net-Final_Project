@@ -135,7 +135,6 @@ namespace DBlog.Controllers
                     return NotFound();
                 }
 
-                // Makale bilgilerini güncelle
                 existingArticle.Title = model.Title;
                 existingArticle.Content = model.Content;
                 existingArticle.Url = model.Url;
@@ -145,10 +144,8 @@ namespace DBlog.Controllers
                     existingArticle.IsActive = model.IsActive;
                 }
 
-                // Görsel dosyasını kontrol et ve güncelle
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
-                    // Eski görseli sil (varsa)
                     if (!string.IsNullOrEmpty(existingArticle.ImageFile))
                     {
                         var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", existingArticle.ImageFile);
@@ -158,7 +155,6 @@ namespace DBlog.Controllers
                         }
                     }
 
-                    // Yeni görseli kaydet
                     var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img");
                     var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(model.ImageFile.FileName);
                     var filePath = Path.Combine(uploadsFolder, uniqueFileName);
@@ -171,7 +167,6 @@ namespace DBlog.Controllers
                     existingArticle.ImageFile = uniqueFileName;
                 }
 
-                // Yeni etiketleri ekle
                 var currentTagIds = existingArticle.Tags.Select(t => t.TagId).ToList();
                 var newTags = _tagRepository.Tags.Where(tag => tagIds.Contains(tag.TagId) && !currentTagIds.Contains(tag.TagId)).ToList();
 
@@ -180,13 +175,11 @@ namespace DBlog.Controllers
                     existingArticle.Tags.Add(tag);
                 }
 
-                // Veritabanında güncellemeleri kaydet
                 _postRepository.Update(existingArticle);
 
                 return RedirectToAction("Index");
             }
 
-            // Eğer model geçerli değilse, View'a geri dön
             ViewBag.Tags = _tagRepository.Tags.ToList();
             return View(model);
         }
@@ -321,122 +314,120 @@ namespace DBlog.Controllers
                 avatar
             });
         }
-
-
-
-
-
-
-
-
         [Authorize]
         public async Task<IActionResult> EditComment(int id)
         {
+            // Fetch the comment including related User and Article
             var comment = await _commentRepository.Comments
-                .Include(c => c.User)
-                .Include(c => c.Article)
+                .Include(c => c.User)      // Make sure User is included
+                .Include(c => c.Article)   // Make sure Article is included
                 .FirstOrDefaultAsync(c => c.CommentId == id);
 
             if (comment == null)
             {
-                return NotFound();
+                return NotFound();  // Handle not found case
             }
 
-            return View(comment);
+            // Ensure that related entities are not null
+            if (comment.User == null || comment.Article == null)
+            {
+                ModelState.AddModelError("", "İlgili kullanıcı veya makale bulunamadı.");
+                return View(comment);  // Return view with error message
+            }
+
+            return View(comment);  // Pass the comment to the view for editing
         }
 
-        // [HttpPost]
-        // [Authorize]
-        // [ValidateAntiForgeryToken]
-        // public async Task<IActionResult> EditComment(int id, [Bind("CommentId,Content")] Comment comment, User user)
-        // {
-        //     if (ModelState.IsValid)
-        //     {
-        //         try
-        //         {
-        //             var existingComment = await _commentRepository.Comments
-        //                 .Include(c => c.User)
-        //                 .Include(c => c.Article)
-        //                 .FirstOrDefaultAsync(c => c.CommentId == id);
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> EditComment(int id, Comment model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model); // Return view with the current model to display validation errors
+            }
 
-        //             if (existingComment == null)
-        //             {
-        //                 return NotFound();
-        //             }
+            var existingComment = await _commentRepository.Comments
+                .Include(c => c.User) // Include User to ensure data integrity
+                .Include(c => c.Article) // Include Article to ensure data integrity
+                .FirstOrDefaultAsync(c => c.CommentId == id);
 
-        //             comment.User = existingComment.User;
-        //             comment.Article = existingComment.Article;
-        //             comment.UserId = existingComment.UserId;
-        //             comment.ArticleId = existingComment.ArticleId;
+            if (existingComment == null)
+            {
+                return NotFound(); // Handle not found case
+            }
 
-        //             existingComment.Content = comment.Content;
+            // Update the comment's content
+            existingComment.Content = model.Content;
 
-        //             _commentRepository.Update(existingComment);
-        //             await _commentRepository.SaveChangesAsync();
-        //             return RedirectToAction(nameof(GetComments));
-        //         }
-        //         catch (DbUpdateConcurrencyException ex)
-        //         {
-        //             if (!_commentRepository.Comments.Any(e => e.CommentId == comment.CommentId))
-        //             {
-        //                 return NotFound();
-        //             }
-        //             else
-        //             {
-        //                 Console.WriteLine($"Concurrency exception: {ex.Message}");
-        //                 throw;
-        //             }
-        //         }
-        //         catch (Exception ex)
-        //         {
-        //             Console.WriteLine($"An error occurred: {ex.Message}");
-        //             throw;
-        //         }
-        //     }
-        //     else
-        //     {
-        //         ModelState.Remove("User");
-        //         ModelState.Remove("Article");
+            try
+            {
+                _commentRepository.Update(existingComment); // Use repository method to update
+                await _commentRepository.SaveChangesAsync(); // Save changes asynchronously
 
-        //         foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-        //         {
-        //             Console.WriteLine($"ModelState error: {error.ErrorMessage}");
-        //         }
-
-        //         return View(comment);
-        //     }
-        // }
+                TempData["SuccessMessage"] = "Yorum başarıyla güncellendi!";
+                return RedirectToAction("GetComments"); // Redirect to comments list
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Yorum güncellenirken bir hata oluştu: " + ex.Message);
+                return View(model); // Return view with error message
+            }
+        }
 
 
 
-
-
+        [Authorize]
+        [HttpGet]
         public async Task<IActionResult> DeleteComment(int id)
         {
-            var comment = await _commentRepository.Comments
-                 .FirstOrDefaultAsync(c => c.CommentId == id);
+            var comment = await _commentRepository.FindAsync(id);
+
             if (comment == null)
             {
                 return NotFound();
             }
+
             return View(comment);
         }
 
         [HttpPost, ActionName("DeleteComment")]
-        public async Task<IActionResult> DeleteCommentConfirmed(int id)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmedComment(int id)
         {
             var comment = await _commentRepository.FindAsync(id);
-            if (comment != null)
+
+            if (comment == null)
             {
-                _commentRepository.DeleteComment(comment);
-                await _commentRepository.SaveChangesAsync();
+                return NotFound();
             }
-            return RedirectToAction("ListComments");
+
+            try
+            {
+                _commentRepository.Remove(comment);
+                await _commentRepository.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Comment deleted successfully!";
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "An error occurred while deleting the comment: " + ex.Message);
+                return View(comment);
+            }
+
+
+            if (User.IsInRole("admin"))
+            {
+
+                return RedirectToAction("GetComments");
+            }
+            else
+            {
+
+                return RedirectToAction("Profile", "Users", new { username = User.Identity.Name });
+            }
         }
 
 
     }
-
 }
-
-

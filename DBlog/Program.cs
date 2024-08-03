@@ -60,12 +60,13 @@ app.MapControllerRoute(
     pattern: "{controller=Article}/{action=Home}/{id?}");
 app.MapControllerRoute(
     name: "profile",
-    pattern: "users/profile/{id?}",
+    pattern: "Profile/{username}",
     defaults: new { controller = "Users", action = "Profile" });
+
 
 app.MapControllerRoute(
     name: "contact",
-    pattern: "Contact",
+    pattern: "contact",
     defaults: new { controller = "Contact", action = "Contact" }
 );
 
