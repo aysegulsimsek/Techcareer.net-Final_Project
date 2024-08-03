@@ -208,22 +208,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\img\3ed15739-ef0b-4d85-b2a1-5abe270534f3_R.jpg))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\img\3f11346f-4758-4eb5-8e5f-5e74e94eac5f_p3.png))">
-      <SourceType>Package</SourceType>
-      <SourceId>DBlog</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/DBlog</BasePath>
-      <RelativePath>img/3f11346f-4758-4eb5-8e5f-5e74e94eac5f_p3.png</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\img\3f11346f-4758-4eb5-8e5f-5e74e94eac5f_p3.png))</OriginalItemSpec>
-    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\img\50cbc292-f5c3-437d-8b17-e2abe6e0eeea.jpg))">
       <SourceType>Package</SourceType>
       <SourceId>DBlog</SourceId>
@@ -383,6 +367,22 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\img\e5094367-0e8d-4a90-94fe-f518f561de73_50cbc292-f5c3-437d-8b17-e2abe6e0eeea.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\img\f3b6f8b4-bdac-4c2b-9df3-6a170a9094ff_50cbc292-f5c3-437d-8b17-e2abe6e0eeea.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>DBlog</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/DBlog</BasePath>
+      <RelativePath>img/f3b6f8b4-bdac-4c2b-9df3-6a170a9094ff_50cbc292-f5c3-437d-8b17-e2abe6e0eeea.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\img\f3b6f8b4-bdac-4c2b-9df3-6a170a9094ff_50cbc292-f5c3-437d-8b17-e2abe6e0eeea.jpg))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\img\f620ceb0-aca8-465a-86c1-02be5b9e80bd_50cbc292-f5c3-437d-8b17-e2abe6e0eeea.jpg))">
       <SourceType>Package</SourceType>
